@@ -1,3 +1,5 @@
 package E1;
 
-public abstract class Bicicleta{}
+public abstract class Bicicleta{
+    int id;
+}
