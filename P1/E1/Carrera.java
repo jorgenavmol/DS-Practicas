@@ -1,3 +1,3 @@
 package E1;
 
-public abstract class Carrera{};
+public abstract class Carrera{}
