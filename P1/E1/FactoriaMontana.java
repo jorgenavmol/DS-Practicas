@@ -3,8 +3,8 @@ package E1;
 public class FactoriaMontana implements FactoriaCarreraYBicicleta {
 
     @Override
-    public Bicicleta CrearBicicleta(){
-        return new BicicletaMontana();
+    public Bicicleta CrearBicicleta(int id){
+        return new BicicletaMontana(id);
     }
 
     @Override
