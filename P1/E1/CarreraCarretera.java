@@ -1,9 +1,12 @@
 package E1;
 
-import java.util.ArrayList;
-
 public class CarreraCarretera extends Carrera {
+
     CarreraCarretera(){
-        bicicletas = new ArrayList<>();
+        super();
+    }
+
+    public void aniadeBicicleta (BicicletaCarretera bici){
+        bicicletas.add(bici);
     }
 }
