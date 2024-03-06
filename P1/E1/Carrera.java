@@ -8,4 +8,7 @@ public abstract class Carrera{
     Carrera(){
         bicicletas = new ArrayList<>();
     }
+
+    public abstract void aniadeBicicleta(Bicicleta bici);
+
 }

@@ -6,7 +6,8 @@ public class CarreraMontana extends Carrera {
         super();
     }
 
-    public void aniadeBicicleta (BicicletaMontana bici){
+    @Override
+    public void aniadeBicicleta (Bicicleta bici){
         bicicletas.add(bici);
     }
 }
