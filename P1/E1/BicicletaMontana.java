@@ -7,7 +7,7 @@ public class BicicletaMontana extends Bicicleta {
     }
 
     @Override
-    public String correr(){
-        return "Corre una bicicleta de montaña de id: " + super.id;
+    public void pedalear(){
+        System.out.println("Corre una bicicleta de montaña de id: " + super.id); 
     }
 }

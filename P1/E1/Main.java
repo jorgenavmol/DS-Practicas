@@ -20,26 +20,46 @@ public class Main {
         CarreraCarretera carreraCarr = new CarreraCarretera();
         CarreraMontana carreraMont = new CarreraMontana();
 
-        ArrayList<Bicicleta> bicisCarretera = new ArrayList<>(N);
+        ArrayList<BicicletaCarretera> bicisCarretera = new ArrayList<>(N);
 
         for(int i = 0; i < N; i++){
-            Bicicleta bici = new BicicletaCarretera(i);
+            BicicletaCarretera bici = new BicicletaCarretera(i);
             bicisCarretera.add(bici);
             carreraCarr.aniadeBicicleta(bici);
         }
 
         System.out.println("Bici carretera: " + bicisCarretera.get(2).id);
 
-        ArrayList<Bicicleta> bicisMontana = new ArrayList<>(N);
+        ArrayList<BicicletaMontana> bicisMontana = new ArrayList<>(N);
 
         for(int i = N; i < 2*N; i++){
-            Bicicleta bici = new BicicletaMontana(i);
+            BicicletaMontana bici = new BicicletaMontana(i);
             bicisMontana.add(bici);
             carreraMont.aniadeBicicleta(bici);
         }
 
         System.out.println("Bici Montaña: " + bicisMontana.get(2).id);
 
+        carreraMont.SetNombre("Carrera de montaña");
+        carreraCarr.SetNombre("Carrera de carretera");
+
+        Thread carreraMontana = new Thread(carreraMont);
+        Thread carreraCarretera = new Thread(carreraCarr);
+
+        
+        carreraCarretera.start();
+        carreraMontana.start();
+
+        try {
+            // Hacer que el programa principal espere 60 segundos
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+            
+        // Detener las carreras después de 60 segundos
+        carreraMontana.interrupt();
+        carreraCarretera.interrupt();
 
     }
 }

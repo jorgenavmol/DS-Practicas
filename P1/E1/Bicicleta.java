@@ -7,5 +7,5 @@ public abstract class Bicicleta{
         this.id = id;
     }
 
-    public abstract String correr();
+    public abstract void pedalear();
 }

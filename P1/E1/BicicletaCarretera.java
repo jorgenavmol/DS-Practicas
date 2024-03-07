@@ -7,8 +7,8 @@ public class BicicletaCarretera extends Bicicleta {
     }
 
     @Override
-    public String correr(){
-        return "Corre una bicicleta de carretera de id: " + super.id;
+    public void pedalear(){
+        System.out.println("Corre una bicicleta de carretera de id: " + super.id);
     }
 
 }
