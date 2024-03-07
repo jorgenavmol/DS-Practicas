@@ -7,6 +7,8 @@ public abstract class Carrera implements Runnable{
 
     public String nombre;
 
+    int instanteRetirada = 4;
+
     Carrera(){
         bicicletas = new ArrayList<>();
     }
@@ -16,10 +18,7 @@ public abstract class Carrera implements Runnable{
     }
 
     public abstract void aniadeBicicleta(Bicicleta bici);
-        
-    public Carrera(ArrayList<Bicicleta> bicicletas, String nombre) {
-        this.bicicletas = bicicletas;
-        this.nombre = nombre;
-    }
+
+    public abstract void retirada();
 }
     
