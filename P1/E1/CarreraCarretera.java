@@ -18,6 +18,7 @@ public class CarreraCarretera extends Carrera {
         int contador = 0;
         try {
             while (!Thread.interrupted()) {
+                contador++;
                 if(contador == instanteRetirada){
                     this.retirada();
                 }
@@ -25,10 +26,9 @@ public class CarreraCarretera extends Carrera {
                     ((BicicletaCarretera)bicicleta).pedalear();
                 }
                 Thread.sleep(1000); // Simular una iteración de la carrera cada segundo
-                contador++;
             }
         } catch (InterruptedException e) {
-            System.out.println(nombre + " interrumpida.");
+            System.out.println(nombre + " finalizada.");
         }
      
     }
