@@ -1,5 +1,5 @@
-from E2.Bicicleta import BicicletaCarretera
-from E2.Carrera import CarreraCarretera
+from E2.Bicicleta import BicicletaMontana
+from E2.Carrera import CarreraMontana
 from E2.FactoriaCarreraYBicicleta import FactoriaCarreraYBicicleta
 
 class FactoriaMontana(FactoriaCarreraYBicicleta):
