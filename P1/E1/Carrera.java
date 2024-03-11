@@ -4,7 +4,6 @@ import java.util.*;
 public abstract class Carrera implements Runnable{
 
     protected ArrayList<Bicicleta> bicicletas;
-
     public String nombre;
 
     int instanteRetirada = 4;
