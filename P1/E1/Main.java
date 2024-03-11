@@ -1,7 +1,5 @@
 package E1;
 
-import java.util.ArrayList;
-
 public class Main {
     public static void main(String[] args) {
         
@@ -15,22 +13,19 @@ public class Main {
             N = Integer.parseInt(args[0]);
         }
 
-        CarreraCarretera carreraCarr = new CarreraCarretera();
-        CarreraMontana carreraMont = new CarreraMontana();
-
-        ArrayList<BicicletaCarretera> bicisCarretera = new ArrayList<>(N);
+        FactoriaCarretera factoriaCarretera = new FactoriaCarretera();
+        FactoriaMontana factoriaMontana = new FactoriaMontana();
+        
+        Carrera carreraCarr = factoriaCarretera.CrearCarrera();
+        Carrera carreraMont = factoriaMontana.CrearCarrera();
 
         for(int i = 0; i < N; i++){
-            BicicletaCarretera bici = new BicicletaCarretera(i);
-            bicisCarretera.add(bici);
+            Bicicleta bici = factoriaCarretera.CrearBicicleta(i);
             carreraCarr.aniadeBicicleta(bici);
         }
 
-        ArrayList<BicicletaMontana> bicisMontana = new ArrayList<>(N);
-
         for(int i = N; i < 2*N; i++){
-            BicicletaMontana bici = new BicicletaMontana(i);
-            bicisMontana.add(bici);
+            Bicicleta bici = factoriaMontana.CrearBicicleta(i);
             carreraMont.aniadeBicicleta(bici);
         }
 
@@ -46,7 +41,7 @@ public class Main {
 
         try {
             // Hacer que el programa principal espere 60 segundos
-            Thread.sleep(6000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
