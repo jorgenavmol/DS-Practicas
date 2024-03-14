@@ -1,4 +1,4 @@
-from E2.Bicicleta import Bicicleta
+from Bicicleta import Bicicleta
 
 class BicicletaCarretera(Bicicleta):
     def __init__(self, id):

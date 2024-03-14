@@ -1,4 +1,4 @@
-from E2.Carrera import Carrera
+from Carrera import Carrera
 from random import Random
 from time import sleep
 
@@ -6,7 +6,7 @@ class CarreraMontana(Carrera):
     def __init__(self):
         super().__init__()
 
-    def aniade_bicicleta(self, bici):
+    def aniadeBicicleta(self, bici):
         self.bicicletas.append(bici)
 
     def run(self):

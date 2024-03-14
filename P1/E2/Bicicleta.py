@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod #PARA DEFINIR CLASES ABSTRACTAS EN PYTHON.
-from E2.Prototipo import Prototipo
+from Prototipo import Prototipo
 
 class Bicicleta(Prototipo):
     def __init__(self, id):
@@ -10,5 +10,5 @@ class Bicicleta(Prototipo):
         pass
 
     def clonar(self):
-        pass
+        return Bicicleta(self.id)
         
