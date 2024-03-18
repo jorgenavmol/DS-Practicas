@@ -3,8 +3,8 @@ from typing import List
 from Bicicleta import Bicicleta
 
 class Carrera(ABC):
-    def __init__(self):
-        self.bicicletas: List[Bicicleta] = []
+    def __init__(self, bicis):
+        self.bicicletas = bicis
         self.nombre: str = ""
         self.instanteRetirada: int = 4
 

@@ -12,15 +12,19 @@ class CarreraMontana(Carrera):
     def run(self):
         contador = 0
         try:
-            while True:
+            while contador < 10:
                 contador += 1
                 if contador == self.instanteRetirada:
                     self.retirada()
                 for bicicleta in self.bicicletas:
                     bicicleta.pedalear()
                 sleep(1)  # Simula una iteración de la carrera cada segundo
+
+                if contador == 10:
+                    print(self.nombre + " finalizada.")
+
         except KeyboardInterrupt:
-            print(self.nombre + " finalizada.")
+            print(self.nombre + " interrumpida.")
 
     def retirada(self):
         N = len(self.bicicletas)
