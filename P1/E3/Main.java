@@ -27,7 +27,7 @@ public class Main {
             String nombreJefe = scanner.nextLine();
             jefes.add(new Jefe(nombreJefe));
 
-            System.out.print("Numero de empleados a cargo del " + nombreJefe + ": ");
+            System.out.print("Numero de empleados a cargo de " + nombreJefe + ": ");
             int numEmpleados = scanner.nextInt();
             scanner.nextLine();
 
@@ -93,7 +93,7 @@ public class Main {
             directorOrg.setBuilder(builder);
 
             System.out.printf("Nombre del evento: ");
-            nombreEvento = scanner.nextLine();
+            nombreEvento = "Conferencia "+scanner.nextLine();
 
             System.out.printf("Fecha del evento: ");
             fechaEvento = scanner.nextLine();
@@ -117,7 +117,7 @@ public class Main {
             directorOrg.setBuilder(builder);
 
             System.out.printf("Nombre del evento: ");
-            nombreEvento = scanner.nextLine();
+            nombreEvento = "Boda "+scanner.nextLine();
 
             System.out.printf("Fecha del evento: ");
             fechaEvento = scanner.nextLine();

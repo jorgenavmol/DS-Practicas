@@ -10,7 +10,7 @@ public class Trabajador implements Empleado{
 
     @Override
     public String getNombre(){
-        return ("Trabajador: " + nombre);
+        return ("Trabajador - " + nombre);
     }
     
 }

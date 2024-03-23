@@ -20,7 +20,7 @@ public class Jefe implements Empleado{
 
     @Override
     public String getNombre(){
-        return ("Jefe: " + nombre);
+        return ("Jefe - " + nombre);
     }
 
     public ArrayList<Empleado> getEquipo(){

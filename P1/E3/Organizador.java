@@ -21,7 +21,7 @@ class Organizador implements Empleado{
 
     @Override
     public String getNombre(){
-        return ("Organizador: " + nombreOrg);
+        return ("Organizador - " + nombreOrg);
     }
 
     public void setBuilder(EventoBuilder builder) {
