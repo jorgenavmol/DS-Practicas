@@ -8,6 +8,7 @@ class CarreraMontana(Carrera):
 
     def aniadeBicicleta(self, bici):
         self.bicicletas.append(bici)
+        print("Añadida bicicleta a montaña.")
 
     def run(self):
         contador = 0
@@ -28,6 +29,7 @@ class CarreraMontana(Carrera):
 
     def retirada(self):
         N = len(self.bicicletas)
+        # Coge la parte entera de la multiplicación, El tamaño de entrada minimo es 5
         retiradas = int(N * 0.2)
         random = Random()
 

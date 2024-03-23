@@ -8,6 +8,7 @@ class CarreraCarretera(Carrera):
 
     def aniadeBicicleta(self, bici):
         self.bicicletas.append(bici)
+        print("Añadida bicicleta a carretera.")
 
     def run(self):
         contador = 0
@@ -22,12 +23,13 @@ class CarreraCarretera(Carrera):
 
                 if contador == 10:
                     print(self.nombre + " finalizada.")
-                    
+
         except KeyboardInterrupt:
             print(self.nombre + " finalizada.")
 
     def retirada(self):
         N = len(self.bicicletas)
+        # Coge la parte entera de la multiplicación, El tamaño de entrada minimo es 10
         retiradas = int(N * 0.1)
         random = Random()
 

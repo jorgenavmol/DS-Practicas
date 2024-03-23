@@ -15,6 +15,10 @@ def main():
     factoria_carretera = FactoriaCarretera()
     factoria_montana = FactoriaMontana()
 
+    #Hi
+    carrera_carretera = factoria_carretera.crearCarrera()
+    carrera_montana = factoria_montana.crearCarrera()
+
     for i in range(N):
         bici = factoria_carretera.crearBicicleta(i)
         carrera_carretera.aniadeBicicleta(bici)
@@ -22,9 +26,6 @@ def main():
     for i in range(N, 2*N):
         bici = factoria_montana.crearBicicleta(i)
         carrera_montana.aniadeBicicleta(bici)
-
-    carrera_carretera = factoria_carretera.crearCarrera()
-    carrera_montana = factoria_montana.crearCarrera()
 
     carrera_montana.setNombre("Carrera de montaña")
     carrera_carretera.setNombre("Carrera de carretera")
