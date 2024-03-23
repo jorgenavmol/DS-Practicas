@@ -7,7 +7,7 @@ abstract class EventoBuilder {
         return evento;
     }
 
-    public abstract void construirNombre();
-    public abstract void construirFecha();
-    public abstract void construirUbicacion();
+    public abstract void construirNombre(String nombre);
+    public abstract void construirFecha(String fecha);
+    public abstract void construirUbicacion(String ubicacion);
 }

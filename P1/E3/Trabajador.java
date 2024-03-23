@@ -1,9 +1,16 @@
 package E3;
 
-public class Trabajador extends Empleado{
+public class Trabajador implements Empleado{
 
-    public Trabajador(String nombre){
-        super(nombre);
+    private String nombre;
+
+    public Trabajador(String new_nombre){
+        this.nombre = new_nombre;
+    }
+
+    @Override
+    public String getNombre(){
+        return ("Trabajador: " + nombre);
     }
     
 }

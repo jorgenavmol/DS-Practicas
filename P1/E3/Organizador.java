@@ -1,20 +1,26 @@
 package E3;
 
-class Organizador extends Empleado{
-    private EventoBuilder builder;
+class Organizador implements Empleado{
 
-    public Organizador(String nombre, EventoBuilder builder) {
-        super(nombre);
+    private EventoBuilder builder;
+    private String nombreOrg;
+
+    public Organizador(String nombreOrg, EventoBuilder builder) {
+        this.nombreOrg = nombreOrg;
         this.builder = builder;
     }
 
-    public void construirEvento() {
-        builder.construirNombre();
-        builder.construirFecha();
-        builder.construirUbicacion();
+    public void construirEvento(String nombre, String fecha, String ubicacion) {
+        builder.construirNombre(nombre);
+        builder.construirFecha(fecha);
+        builder.construirUbicacion(ubicacion);
     }
 
     public Evento getEvento() {
         return builder.getEvento();
+    }
+
+    public String getNombre(){
+        return ("Organizador: " + nombreOrg);
     }
 }

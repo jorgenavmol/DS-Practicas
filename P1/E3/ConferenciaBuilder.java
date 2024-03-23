@@ -1,15 +1,15 @@
 package E3;
 
 class ConferenciaBuilder extends EventoBuilder {
-    public void construirNombre() {
-        evento.setNombre("Conferencia");
+    public void construirNombre(String nombre) {
+        evento.setNombre(nombre);
     }
 
-    public void construirFecha() {
-        evento.setFecha("4/10/2003");
+    public void construirFecha(String fecha) {
+        evento.setFecha(fecha);
     }
 
-    public void construirUbicacion() {
-        evento.setUbicacion("En casa de Jose");
+    public void construirUbicacion(String ubicacion) {
+        evento.setUbicacion(ubicacion);
     }
 }
