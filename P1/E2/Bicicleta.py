@@ -9,8 +9,9 @@ class Bicicleta(Prototipo):
     def pedalear(self):
         pass
 
+    @abstractmethod
     def clonar(self):
-        return Bicicleta(self.id)
+        pass
     
     def setId(self, id):
         self.id = id

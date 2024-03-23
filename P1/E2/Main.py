@@ -20,13 +20,15 @@ def main():
 
     bici = factoria_carretera.crearBicicleta(0)
     carrera_carretera.aniadeBicicleta(bici)
+
     for i in range(N-1):
         bici = bici.clonar()
         bici.setId(i+1)
         carrera_carretera.aniadeBicicleta(bici)
 
-    bici = factoria_montana.crearBicicleta(0)
+    bici = factoria_montana.crearBicicleta(N)
     carrera_montana.aniadeBicicleta(bici)
+
     for i in range(N, 2*N):
         bici = bici.clonar()
         bici.setId(i+1)
@@ -37,11 +39,11 @@ def main():
     carrera_carretera.setNombre("Carrera de carretera")
 
     try:
-        # Hacer que el programa principal espere 10 segundos
+        # Hacer que el programa principal espere 60 segundos
         carrera_carretera.run()
         carrera_montana.run()
     except KeyboardInterrupt:
-        # Detener las carreras después de 10 segundos si se interrumpe con Ctrl+C
+        # Detener las carreras antes de 60 segundos si se interrumpe con Ctrl+C
         print("Alguna de las carreras se ha finalizado de forma manual.")
 
 if __name__ == "__main__":
