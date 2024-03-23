@@ -5,14 +5,14 @@ public class Main {
     public static void main(String[] args) {
         // Crear un constructor para una conferencia
         EventoBuilder builderConferencia = new ConferenciaBuilder();
-        EventoDirector director = new EventoDirector(builderConferencia);
-        director.construirEvento(new ListaInvitadosGenerica(), new CateringBasico());
+        Organizador director = new Organizador("Juan", builderConferencia);
+        director.construirEvento();
         Evento conferencia = director.getEvento();
 
         // Crear un constructor para una boda
         EventoBuilder builderBoda = new BodaBuilder();
-        director = new EventoDirector(builderBoda);
-        director.construirEvento(new ListaInvitadosVIP(), new CateringPremium());
+        director = new Organizador("Pepe", builderBoda);
+        director.construirEvento();
         Evento boda = director.getEvento();
 
         // Mostrar los eventos construidos

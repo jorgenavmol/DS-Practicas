@@ -10,6 +10,4 @@ abstract class EventoBuilder {
     public abstract void construirNombre();
     public abstract void construirFecha();
     public abstract void construirUbicacion();
-    public abstract void construirInvitados(InvitadosStrategy strategy);
-    public abstract void construirCatering(CateringStrategy strategy);
 }

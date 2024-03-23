@@ -13,12 +13,4 @@ class BodaBuilder extends EventoBuilder {
     public void construirUbicacion() {
         evento.setUbicacion("En mi casa");
     }
-
-    public void construirInvitados(InvitadosStrategy strategy) {
-        evento.setInvitados(strategy.getInvitados());
-    }
-
-    public void construirCatering(CateringStrategy strategy) {
-        evento.setCatering(strategy.getCatering());
-    }
 }
