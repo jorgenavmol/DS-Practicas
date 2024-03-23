@@ -5,9 +5,8 @@ class Organizador implements Empleado{
     private EventoBuilder builder;
     private String nombreOrg;
 
-    public Organizador(String nombreOrg, EventoBuilder builder) {
+    public Organizador(String nombreOrg) {
         this.nombreOrg = nombreOrg;
-        this.builder = builder;
     }
 
     public void construirEvento(String nombre, String fecha, String ubicacion) {
@@ -23,5 +22,9 @@ class Organizador implements Empleado{
     @Override
     public String getNombre(){
         return ("Organizador: " + nombreOrg);
+    }
+
+    public void setBuilder(EventoBuilder builder) {
+        this.builder = builder;
     }
 }
