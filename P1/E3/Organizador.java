@@ -20,6 +20,7 @@ class Organizador implements Empleado{
         return builder.getEvento();
     }
 
+    @Override
     public String getNombre(){
         return ("Organizador: " + nombreOrg);
     }

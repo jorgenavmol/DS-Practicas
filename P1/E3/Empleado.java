@@ -1,5 +1,7 @@
 package E3;
 
+import java.util.ArrayList;
+
 public interface Empleado{
 
     /*public Empleado(String new_nombre){

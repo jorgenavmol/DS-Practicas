@@ -1,6 +1,7 @@
 package E3;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,10 +10,34 @@ public class Main {
         EventoBuilder builder;
         Organizador directorOrg;
         String nombreEvento, fechaEvento, ubicacionEvento;
+        ArrayList<Jefe> jefes = new ArrayList<Jefe>();
 
         System.out.printf("¿Quién es el organizador del evento?: ");
         String nombreOrganizador = scanner.nextLine();
 
+        //Obtenemos el numero de jefes.
+        System.out.println("Numero de jefes deseados: ");
+        int numJefes = scanner.nextInt();
+        scanner.nextLine();
+
+        for(int i=0; i<numJefes; i++){
+
+            System.out.print("Nombre del jefe numero: " + (i+1));
+            String nombreJefe = scanner.nextLine();
+            jefes.add(new Jefe(nombreJefe));
+
+            System.out.print("Numero de trabajadores a cargo del jefe numero: " + (i+1));
+            int numTrabajadores = scanner.nextInt();
+            scanner.nextLine();
+
+            for(int j=0; j<numTrabajadores; j++){
+                System.out.print("Nombre del empleado numero: " + (j+1));
+                String nombreTrabajador = scanner.nextLine();
+                Trabajador trabajador = new Trabajador(nombreTrabajador);
+                jefes.get(i).aniadeEmpleado(trabajador);
+            }
+        }
+        
         System.out.printf("¿Qué tipo de evento desea crear? (Conferencia=1, Boda=2): ");
         int tipoEvento = scanner.nextInt();
         scanner.nextLine();
@@ -33,6 +58,8 @@ public class Main {
 
             //Construimos el evento.
             directorOrg.construirEvento(nombreEvento, fechaEvento, ubicacionEvento);
+
+
 
             Evento conferencia = directorOrg.getEvento();
             System.out.println("Nombre del Organizador: " + directorOrg.getNombre());
