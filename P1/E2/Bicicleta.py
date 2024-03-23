@@ -11,4 +11,7 @@ class Bicicleta(Prototipo):
 
     def clonar(self):
         return Bicicleta(self.id)
+    
+    def setId(self, id):
+        self.id = id
         

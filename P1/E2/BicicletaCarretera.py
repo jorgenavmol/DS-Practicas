@@ -6,3 +6,6 @@ class BicicletaCarretera(Bicicleta):
 
     def pedalear(self):
         print("Corre una bicicleta de carretera de id:", self.id)
+
+    def clonar(self):
+        return BicicletaCarretera(self.id)

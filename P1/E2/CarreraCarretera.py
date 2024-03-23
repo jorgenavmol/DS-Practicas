@@ -8,7 +8,6 @@ class CarreraCarretera(Carrera):
 
     def aniadeBicicleta(self, bici):
         self.bicicletas.append(bici)
-        print("Añadida bicicleta a carretera.")
 
     def run(self):
         contador = 0
