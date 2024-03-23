@@ -2,6 +2,7 @@ package E4;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 
 public class ControlVehiculo extends JFrame {
     private JPanel panelMandos;
@@ -16,6 +17,8 @@ public class ControlVehiculo extends JFrame {
     private JLabel rpmLabel;
 
     private GestorFiltros gestor;
+    private Timer acelerarTimer;
+    private Timer frenarTimer;
 
     public ControlVehiculo(GestorFiltros gestor) {
         this.gestor = gestor;
@@ -50,6 +53,7 @@ public class ControlVehiculo extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if (encenderButton.isSelected()) {
                     estadoLabel.setText("ENCENDIDO");
+                    estadoLabel.setForeground(Color.GREEN);
                     encenderButton.setText("Apagar");
                     encenderButton.setForeground(Color.RED);
                     acelerarButton.setEnabled(true);
@@ -58,6 +62,7 @@ public class ControlVehiculo extends JFrame {
                     actualizarSalpicadero();
                 } else {
                     estadoLabel.setText("APAGADO");
+                    estadoLabel.setForeground(Color.BLACK);
                     encenderButton.setText("Encender");
                     encenderButton.setForeground(Color.GREEN);
                     acelerarButton.setEnabled(false);
@@ -74,44 +79,76 @@ public class ControlVehiculo extends JFrame {
             }
         });
 
-        // Cambiar texto del botón Acelerar cuando está seleccionado
-        acelerarButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (acelerarButton.isSelected() && encenderButton.isSelected()) {
+        // Crear el Timer para acelerar
+        acelerarTimer = new Timer(100, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gestor.cambio(gestor.cadenaFiltros.objetivo.revoluciones, EstadoMotor.ACELERANDO);
+                actualizarSalpicadero();
+            }
+        });
+
+        // Comportamiento al pulsar y soltar el botón de acelerar
+        acelerarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (frenarButton.isSelected()) {
                     estadoLabel.setText("ACELERANDO");
+                    estadoLabel.setForeground(Color.RED);
+                    frenarButton.setText("Frenar");
+                    frenarButton.setForeground(Color.BLACK);
+                    frenarTimer.stop();
+                    frenarButton.setSelected(false);
+                }
+                
+                if (acelerarButton.isSelected()) {
+                    estadoLabel.setText("ACELERANDO");
+                    estadoLabel.setForeground(Color.RED);
                     acelerarButton.setText("Soltar Acelerador");
                     acelerarButton.setForeground(Color.RED);
                     frenarButton.setSelected(false);
-                    gestor.cambio(gestor.cadenaFiltros.objetivo.revoluciones, EstadoMotor.ACELERANDO);
-                    actualizarSalpicadero();
-
-                } else if (!acelerarButton.isSelected() && encenderButton.isSelected()) {
+                    acelerarTimer.start();
+                } else {
                     estadoLabel.setText("ENCENDIDO");
+                    estadoLabel.setForeground(Color.GREEN);
                     acelerarButton.setText("Acelerar");
                     acelerarButton.setForeground(Color.BLACK);
-
+                    acelerarTimer.stop();
                 }
             }
         });
 
-        // Cambiar texto del botón Frenar cuando está seleccionado
-        frenarButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (frenarButton.isSelected() && encenderButton.isSelected()) {
-                    estadoLabel.setText("FRENANDO");
-                    frenarButton.setText("Soltar Frenar");
-                    frenarButton.setForeground(Color.RED);
-                    acelerarButton.setSelected(false);
-
-                } else if (!frenarButton.isSelected() && encenderButton.isSelected()) {
-                    estadoLabel.setText("ENCENDIDO");
-                    frenarButton.setText("Frenar");
-                    frenarButton.setForeground(Color.BLACK);
-
-                }
-                // Actualizar el salpicadero
+        // Crear el Timer para frenar
+        frenarTimer = new Timer(100, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 gestor.cambio(gestor.cadenaFiltros.objetivo.revoluciones, EstadoMotor.FRENANDO);
                 actualizarSalpicadero();
+            }
+        });
+
+        // Comportamiento al pulsar y soltar el botón de frenar
+        frenarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (acelerarButton.isSelected()) {
+                    estadoLabel.setText("FRENANDO");
+                    estadoLabel.setForeground(Color.RED);
+                    acelerarButton.setText("Acelerar");
+                    acelerarButton.setForeground(Color.BLACK);
+                    acelerarTimer.stop();
+                    acelerarButton.setSelected(false);
+                }
+                if (frenarButton.isSelected()) {
+                    estadoLabel.setText("FRENANDO");
+                    estadoLabel.setForeground(Color.RED);
+                    frenarButton.setText("Soltar Freno");
+                    frenarButton.setForeground(Color.RED);
+                    acelerarButton.setSelected(false);
+                    frenarTimer.start();
+                } else {
+                    estadoLabel.setText("ENCENDIDO");
+                    estadoLabel.setForeground(Color.GREEN);
+                    frenarButton.setText("Frenar");
+                    frenarButton.setForeground(Color.BLACK);
+                    frenarTimer.stop();
+                }
             }
         });
 
@@ -153,10 +190,11 @@ public class ControlVehiculo extends JFrame {
 
     // Método para actualizar el salpicadero con los valores del GestorFiltros
     private void actualizarSalpicadero() {
-        velocidadLabel.setText("km/h: " + Double.toString(gestor.getCadenaFiltros().getObjetivo().getVelocidad()) );
-        contadorRecienteLabel.setText("Contador Reciente: " + Double.toString(gestor.getCadenaFiltros().getObjetivo().getDistancia()));
-        contadorRealLabel.setText("Contador Real: " + Double.toString(gestor.getCadenaFiltros().getObjetivo().getDistancia()));
-        rpmLabel.setText("RPM: " + Double.toString(gestor.getCadenaFiltros().getObjetivo().getRevoluciones()));
+        DecimalFormat formato = new DecimalFormat("#.###");
+        velocidadLabel.setText("km/h: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getVelocidad()));
+        contadorRecienteLabel.setText("Contador Reciente: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getDistanciaActual()));
+        contadorRealLabel.setText("Contador Real: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getDistanciaReal()));
+        rpmLabel.setText("RPM: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getRevoluciones()));
     }
 
     public static void main(String[] args) {

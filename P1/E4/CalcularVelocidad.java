@@ -7,16 +7,16 @@ public class CalcularVelocidad implements Filtro{
         double incrementoVelocidad = 0;
         switch(estado) {
             case ACELERANDO:
-                incrementoVelocidad = 100.0;
+                incrementoVelocidad = 30.0;
                 break;
             case FRENANDO:
-                incrementoVelocidad = -100;
+                incrementoVelocidad = -30;
                 break;
             case APAGADO:
                 incrementoVelocidad = 0; revoluciones = 0;
                 break;
             case ENCENDIDO:
-                incrementoVelocidad = 0; revoluciones = 900;
+                incrementoVelocidad = 0; revoluciones = 500;
                 break;
         }
         
