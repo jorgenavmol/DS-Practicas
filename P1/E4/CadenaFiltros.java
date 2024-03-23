@@ -16,12 +16,15 @@ public class CadenaFiltros {
         for (Filtro filtro : filtros){
             suma = filtro.ejecutar(suma, estado);
         }
-        System.out.println("suma: " + suma); 
         this.objetivo.ejecutar(suma, estado);
     }
 
     public void setObjetivo(Objetivo objetivo){
         this.objetivo = objetivo;
+    }
+
+    Objetivo getObjetivo(){
+        return objetivo;
     }
     
 }

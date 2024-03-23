@@ -15,4 +15,8 @@ public class GestorFiltros {
     public void cambio (double revoluciones, EstadoMotor estado){
         cadenaFiltros.ejecutar(revoluciones, estado);
     }
+
+    CadenaFiltros getCadenaFiltros(){
+        return cadenaFiltros;
+    }
 }
