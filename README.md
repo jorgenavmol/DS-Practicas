@@ -9,9 +9,9 @@ Actualizado: 24/3/2024
 
 # Resumen: 
 ### Ejercicio 1: Patrón factoría abstracta en java
->>> Decida el nombre corto de su propuesta en la práctica 2
+Decida el nombre corto de su propuesta en la práctica 2
 
-### Ejercicio 2: Patrón factoría abstracta + Ptrón pototipo en Python
+### Ejercicio 2: Patrón factoría abstracta + Patrón pototipo en Python
 
 ### Ejercicio 3: Patrón Builder + Composición en java
 
