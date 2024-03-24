@@ -14,7 +14,7 @@ public class CarreraCarretera extends Carrera {
     }
 
     @Override
-    public void run() {
+    public void run(){
         int contador = 0;
         try {
             while (!Thread.interrupted()) {
