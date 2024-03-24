@@ -1,7 +1,7 @@
 # DS PRÁCTICA 1: Uso de patrones de diseño creacionales y estructurales en OO
 Prácticas Desarrollo de software 2023-24 
 
-##Grupo: Óscar Picado Cariño, Carmen Quiles Ramírez, Jorge Navarro Molina, Jose López Rubio.
+## Grupo: Óscar Picado Cariño, Carmen Quiles Ramírez, Jorge Navarro Molina, Jose López Rubio.
 
 Curso: 2023/24 
 
