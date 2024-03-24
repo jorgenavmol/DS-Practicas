@@ -192,8 +192,8 @@ public class ControlVehiculo extends JFrame {
     private void actualizarSalpicadero() {
         DecimalFormat formato = new DecimalFormat("#.###");
         velocidadLabel.setText("km/h: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getVelocidad()));
-        contadorRecienteLabel.setText("Contador Reciente: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getDistanciaActual()));
-        contadorRealLabel.setText("Contador Real: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getDistanciaReal()));
+        contadorRecienteLabel.setText("Contador Reciente: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getDistanciaActual()) + " km");
+        contadorRealLabel.setText("Contador Real: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getDistanciaReal()) + " km");
         rpmLabel.setText("RPM: " + formato.format(gestor.getCadenaFiltros().getObjetivo().getRevoluciones()));
     }
 
