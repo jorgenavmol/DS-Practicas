@@ -1,7 +1,5 @@
 package E3;
 
-import java.util.ArrayList;
-
 class Evento {
     private String nombre;
     private String fecha;
