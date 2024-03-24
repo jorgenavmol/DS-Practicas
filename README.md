@@ -21,7 +21,7 @@ Actualizado: 24/3/2024
 ### Ejercicio 3: Patrón Builder + Composición en java
 [Código ejercicio 3](P1/E3)
 
-![Diagrama_ej3](P1/E1)
+![Diagrama_ej3](P1/img/Ej3.png)
 
 ### Ejercicio 4: Patrón (estilo) arquitectónico _filtros de intercepción_ en java. Simulación del movimiento de un vehículo con cambio automático.
 [Código ejercicio 4](P1/E4)

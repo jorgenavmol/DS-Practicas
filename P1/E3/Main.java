@@ -19,7 +19,7 @@ public class Main {
         //Obtenemos el numero de jefes.
         System.out.print("Numero de jefes deseados: ");
         int numJefes = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine(); //El enter cuenta a la hora de leer enteros. Así, se evita.
 
         for(int i=0; i<numJefes; i++){
 
