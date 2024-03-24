@@ -7,9 +7,9 @@ Curso: 2023/24
 
 Actualizado: 24/3/2024
 
-# Resumen: 
+# Diagramas: 
 ### Ejercicio 1: Patrón factoría abstracta en java
-Decida el nombre corto de su propuesta en la práctica 2
+[Código ejercicio 1](P1/E1)
 
 ### Ejercicio 2: Patrón factoría abstracta + Patrón pototipo en Python
 
