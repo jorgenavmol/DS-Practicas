@@ -27,6 +27,7 @@ Decida el nombre corto de su propuesta en la práctica 2
 <br />
 <br />
 <br />
+
 _Notas privadas del grupo:_
 
 >//Actualizar
