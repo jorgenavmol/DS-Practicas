@@ -41,7 +41,7 @@ public class Main {
 
         try {
             // Hacer que el programa principal espere 60 segundos
-            Thread.sleep(10000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

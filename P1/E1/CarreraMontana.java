@@ -40,6 +40,7 @@ public class CarreraMontana extends Carrera {
 
         for(int i = 0; i < retiradas; i++){
             int rand = random.nextInt(bicicletas.size());
+            //Para que se retine un mínimo de 1 bicicleta, N debe ser 5 o más
             System.out.println("Se retira la bicicleta de montaña: " + bicicletas.get(rand).id);
             bicicletas.remove(rand);
         }
