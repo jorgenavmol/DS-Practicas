@@ -24,8 +24,13 @@ Decida el nombre corto de su propuesta en la práctica 2
 <br />
 <br />
 <br />
-Notas privadas del grupo:
+<br />
+<br />
+<br />
+_Notas privadas del grupo:_
+
 >//Actualizar
+
 >>git add . 
 
 >>git commit -m "Cambiando el enlace del botón"
