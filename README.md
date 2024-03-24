@@ -8,23 +8,23 @@ Resumen general:
 >>> Decida el nombre corto de su propuesta en la práctica 2 
 
 
->>> Notas privadas del grupo:
-//Actualizar
-git add . 
+Notas privadas del grupo:
+>>//Actualizar
+>>>git add . 
 
-git commit -m "Cambiando el enlace del botón"
+>>>git commit -m "Cambiando el enlace del botón"
 
-git push origin main
+>>>git push origin main
 
-git pull origin main //descargar
+>>>git pull origin main //descargar
 
-git clone git@github.com:jorgenavmol/DS-Practicas.git
+>>>git clone git@github.com:jorgenavmol/DS-Practicas.git
 
-//Compilar y ejecutar en java
+>>//Compilar y ejecutar en java
 
-javac E1/Ej1.java (Desde la carpeta P1)
+>>>javac E1/Ej1.java (Desde la carpeta P1)
 
-java E1.Ej1
+>>>java E1.Ej1
 
 
 
