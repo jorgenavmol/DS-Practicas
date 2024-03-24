@@ -11,11 +11,22 @@ Actualizado: 24/3/2024
 ### Ejercicio 1: Patrón factoría abstracta en java
 [Código ejercicio 1](P1/E1)
 
+![Diagrama_ej1](P1/img/EJ1.jpg)
+
 ### Ejercicio 2: Patrón factoría abstracta + Patrón pototipo en Python
+[Código ejercicio 2](P1/E2)
+
+![Diagrama_ej2](P1/img/Ej2.png)
 
 ### Ejercicio 3: Patrón Builder + Composición en java
+[Código ejercicio 3](P1/E3)
+
+![Diagrama_ej3](P1/E1)
 
 ### Ejercicio 4: Patrón (estilo) arquitectónico _filtros de intercepción_ en java. Simulación del movimiento de un vehículo con cambio automático.
+[Código ejercicio 4](P1/E4)
+
+![Diagrama_ej4](P1/img/Ej4.png)
 
 <br />
 <br />
