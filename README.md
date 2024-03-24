@@ -1,20 +1,52 @@
+# DS PRÁCTICA 1: Uso de patrones de diseño creacionales y estructurales en OO
+**Prácticas Desarrollo de software 2023-24** 
 
-//Actualizar
-git add . 
+## Grupo: Óscar Picado Cariño, Carmen Quiles Ramírez, Jorge Navarro Molina, Jose López Rubio.
 
-git commit -m "Cambiando el enlace del botón"
+Curso: 2023/24 
 
-git push origin main
+Actualizado: 24/3/2024
 
-git pull origin main //descargar
+# Diagramas: 
+### Ejercicio 1: Patrón factoría abstracta en java
+[Código ejercicio 1](P1/E1)
 
-git clone git@github.com:jorgenavmol/DS-Practicas.git
+### Ejercicio 2: Patrón factoría abstracta + Patrón pototipo en Python
 
-//Compilar y ejecutar en java
+### Ejercicio 3: Patrón Builder + Composición en java
 
-javac E1/Ej1.java (Desde la carpeta P1)
+### Ejercicio 4: Patrón (estilo) arquitectónico _filtros de intercepción_ en java. Simulación del movimiento de un vehículo con cambio automático.
 
-java E1.Ej1
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+_Notas privadas del grupo:_
+
+>//Actualizar
+
+>>git add . 
+
+>>git commit -m "Cambiando el enlace del botón"
+
+>>git push origin main
+
+>>git pull origin main //descargar
+
+>>git clone git@github.com:jorgenavmol/DS-Practicas.git
+
+>//Compilar y ejecutar en java
+
+>>javac E1/Ej1.java (Desde la carpeta P1)
+
+>>java E1.Ej1
 
 
 
