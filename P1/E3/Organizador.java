@@ -1,6 +1,6 @@
 package E3;
 
-class Organizador implements Empleado{
+public class Organizador implements Empleado{
 
     private EventoBuilder builder;
     private String nombreOrg;
