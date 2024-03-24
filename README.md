@@ -17,16 +17,13 @@ Decida el nombre corto de su propuesta en la práctica 2
 
 ### Ejercicio 4: Patrón (estilo) arquitectónico _filtros de intercepción_ en java. Simulación del movimiento de un vehículo con cambio automático.
 
-
-
-
-
-
-
-
-
-
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 Notas privadas del grupo:
 >//Actualizar
 >>git add . 
