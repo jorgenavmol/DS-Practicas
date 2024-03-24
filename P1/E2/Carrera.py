@@ -12,6 +12,10 @@ class Carrera(ABC):
         self.nombre = nombre
 
     @abstractmethod
+    def run(self):
+        pass
+
+    @abstractmethod
     def aniadeBicicleta(self, bici: Bicicleta):
         pass
 
