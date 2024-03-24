@@ -2,7 +2,9 @@
 Prácticas Desarrollo de software 2023-24 
 
 Grupo: Óscar Picado Cariño, Carmen Quiles Ramírez, Jorge Navarro Molina, Jose López Rubio.
+
 Curso: 2023/24 
+
 Actualizado: 24/3/2024
 
 Resumen general: 
