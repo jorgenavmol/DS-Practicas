@@ -26,7 +26,7 @@ Actualizado: 24/3/2024
 ### Ejercicio 4: Patrón (estilo) arquitectónico _filtros de intercepción_ en java. Simulación del movimiento de un vehículo con cambio automático.
 [Código ejercicio 4](P1/E4)
 
-![Diagrama_ej4](P1/img/Ej3.png)
+![Diagrama_ej4](P1/img/Ej4.png)
 
 <br />
 <br />
