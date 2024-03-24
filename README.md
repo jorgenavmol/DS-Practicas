@@ -7,8 +7,15 @@ Curso: 2023/24
 
 Actualizado: 24/3/2024
 
-# Resumen general: 
->>> Decida el nombre corto de su propuesta en la práctica 2 
+# Resumen: 
+### Ejercicio 1: Patrón factoría abstracta en java
+>>> Decida el nombre corto de su propuesta en la práctica 2
+
+### Ejercicio 2: Patrón factoría abstracta + Ptrón pototipo en Python
+
+### Ejercicio 3: Patrón Builder + Composición en java
+
+### Ejercicio 4: Patrón (estilo) arquitectónico _filtros de intercepción_ en java. Simulación del movimiento de un vehículo con cambio automático.
 
 
 Notas privadas del grupo:
