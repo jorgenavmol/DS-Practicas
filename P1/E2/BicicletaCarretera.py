@@ -8,4 +8,4 @@ class BicicletaCarretera(Bicicleta):
         print("Corre una bicicleta de carretera de id:", self.id)
 
     def clonar(self):
-        return BicicletaCarretera(self.id)
+        return BicicletaCarretera(self.id) #return deepcopy(self)
