@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'evento_builder.dart';
+import 'organizador.dart';
+import 'jefe.dart';
+import 'trabajador.dart';
+import 'conferencia_builder.dart';
+import 'boda_builder.dart';
+import 'tipo_empleado.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,46 +14,21 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Creador de Eventos',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent,),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Creador de Eventos'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -55,71 +37,152 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final TextEditingController numJefesController = TextEditingController();
+  final TextEditingController nombreEmpleadoController = TextEditingController();
+  final TextEditingController nombreEventoController = TextEditingController();
+  final TextEditingController fechaEventoController = TextEditingController();
+  final TextEditingController ubicacionEventoController = TextEditingController();
+  String tipoEvento = 'Conferencia'; // Valor por defecto
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final List<Jefe> jefes = [];
+  final List<Organizador> organizadores = [];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          const Text(
+            'Ingresar Jefes y Empleados:',
+            style: TextStyle(fontSize: 24.0),
+          ),
+          TextFormField(
+            controller: numJefesController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(labelText: 'Número de Jefes'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              int numJefes = int.tryParse(numJefesController.text) ?? 0;
+              if (numJefes > 0) {
+                for (int i = 0; i < numJefes; i++) {
+                  jefes.add(Jefe('Jefe ${i + 1}'));
+                }
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CrearEmpleadosDialog(
+                      jefes: jefes,
+                      organizadores: organizadores
+                    );
+                  },
+                );
+              } else {
+                // Mostrar mensaje de error
+              }
+            },
+            child: const Text('Ingresar Jefes y Empleados'),
+          ),
+          const SizedBox(height: 24.0),
+          // Aquí colocaremos la sección para crear eventos según el organizador
+          // La implementación dependerá de cómo quieras diseñar esta parte
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+class CrearEmpleadosDialog extends StatefulWidget {
+  final List<Jefe> jefes;
+  final List<Organizador> organizadores;
+  const CrearEmpleadosDialog({super.key, required this.jefes, required this.organizadores});
+
+  @override
+  State<CrearEmpleadosDialog>createState() => _CrearEmpleadosDialogState();
+}
+
+class _CrearEmpleadosDialogState extends State<CrearEmpleadosDialog> {
+  final TextEditingController nombreEmpleadoController = TextEditingController();
+  TipoEmpleado? tipoEmpleadoSeleccionado;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Ingresar Empleados'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var jefe in widget.jefes)
+            Column(
+              children: [
+                Text('Jefe: ${jefe.nombre}'),
+                TextFormField(
+                  controller: nombreEmpleadoController,
+                  decoration: const InputDecoration(labelText: 'Nombre del Empleado'),
+                ),
+                DropdownButtonFormField<TipoEmpleado>(
+                  value: tipoEmpleadoSeleccionado,
+                  onChanged: (TipoEmpleado? newValue) {
+                    setState(() {
+                      tipoEmpleadoSeleccionado = newValue;
+                    });
+                  },
+                  items: TipoEmpleado.values.map<DropdownMenuItem<TipoEmpleado>>((TipoEmpleado value) {
+                    return DropdownMenuItem<TipoEmpleado>(
+                      value: value,
+                      child: Text(value.toString().split('.').last),
+                    );
+                  }).toList(),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    String nombreEmpleado = nombreEmpleadoController.text;
+                    if (tipoEmpleadoSeleccionado != null) {
+                      switch (tipoEmpleadoSeleccionado) {
+                        case TipoEmpleado.organizador:
+                          Organizador organizador = Organizador(nombreEmpleado);
+                          widget.organizadores.add(organizador); // Modificación aquí
+                          jefe.aniadeEmpleado(organizador);
+                          break;
+                        case TipoEmpleado.trabajador:
+                          jefe.aniadeEmpleado(Trabajador(nombreEmpleado));
+                          break;
+                        case TipoEmpleado.jefe:
+                          Jefe nuevoJefe = Jefe(nombreEmpleado);
+                          widget.jefes.add(nuevoJefe); // Modificación aquí
+                          jefe.aniadeEmpleado(nuevoJefe);
+                          break;
+                        default:
+                          break;
+                      }
+                      setState(() {
+                        nombreEmpleadoController.clear();
+                        tipoEmpleadoSeleccionado = null;
+                      });
+                    } else {
+                      // Mostrar mensaje de error indicando que se debe seleccionar un tipo de empleado
+                    }
+                  },
+                  child: const Text('Agregar Empleado'),
+                ),
+                const SizedBox(height: 16.0),
+              ],
+            ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Finalizar'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
