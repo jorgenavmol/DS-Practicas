@@ -204,15 +204,17 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
                 ElevatedButton(
                   onPressed: () {
                     String nombre = nombreEvController.text;
-                    if (nombre.isNotEmpty) {
+                    String fecha = fechaController.text;
+                    String ubi = ubiController.text;
+                    if (nombre.isNotEmpty && fecha.isNotEmpty && ubi.isNotEmpty) {
                       if (eventoSeleccionado == TipoEvento.boda) {
                         EventoBuilder constructor = BodaBuilder();
                         organizadorSeleccionado.setBuilder(constructor);
-                        organizadorSeleccionado.construirEvento(nombreEvController.text, fechaController.text, ubiController.text);
+                        organizadorSeleccionado.construirEvento(nombre, fecha, ubi);
                       } else if (eventoSeleccionado == TipoEvento.conferencia) {
                         EventoBuilder constructor = ConferenciaBuilder();
                         organizadorSeleccionado.setBuilder(constructor);
-                        organizadorSeleccionado.construirEvento(nombreEvController.text, fechaController.text, ubiController.text);
+                        organizadorSeleccionado.construirEvento(nombre, fecha, ubi);
                       }
                     }
                     Navigator.pop(
@@ -277,17 +279,17 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
                 if (empleado is Organizador) {
                   return ListTile(
                     title: Text(empleado.getNombre()),
+                    tileColor: Colors.blue.withOpacity(0.1), // Cambia el color de fondo cuando se toca
                     onTap: () {
                       // Al hacer tap en el organizador, se abre el formulario para crear un evento
-                      if(!empleado.tieneEvento){
+                      if (!empleado.tieneEvento) {
                         _crearEvento(context, empleado);
-                      }
-                      else{
+                      } else {
                         _mostrarEvento(context, empleado);
                       }
-
                     },
                   );
+
                 } else {
                   return ListTile(
                     title: Text(empleado.getNombre()),
