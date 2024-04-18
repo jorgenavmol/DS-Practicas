@@ -9,6 +9,10 @@ class Jefe implements Empleado {
     nombre = nomb;
   }
 
+  Jefe.empty() {
+    nombre = "";
+  }
+
   void aniadeEmpleado(Empleado empleado) {
     _empleados.add(empleado);
   }

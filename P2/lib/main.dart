@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'evento_builder.dart';
 import 'organizador.dart';
 import 'jefe.dart';
+import 'empleado.dart';
 import 'trabajador.dart';
 import 'conferencia_builder.dart';
 import 'boda_builder.dart';
@@ -19,7 +20,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Creador de Eventos',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent,),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.greenAccent,
+        ),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Creador de Eventos'),
@@ -38,14 +41,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController numJefesController = TextEditingController();
-  final TextEditingController nombreEmpleadoController = TextEditingController();
-  final TextEditingController nombreEventoController = TextEditingController();
-  final TextEditingController fechaEventoController = TextEditingController();
-  final TextEditingController ubicacionEventoController = TextEditingController();
-  String tipoEvento = 'Conferencia'; // Valor por defecto
-
+  bool jefesIngresados = false;
   final List<Jefe> jefes = [];
   final List<Organizador> organizadores = [];
+  final List<Empleado> empleados = []; // Almacena los empleados aquí
 
   @override
   Widget build(BuildContext context) {
@@ -64,117 +63,214 @@ class _MyHomePageState extends State<MyHomePage> {
           TextFormField(
             controller: numJefesController,
             keyboardType: TextInputType.number,
+            enabled: !jefesIngresados,
             decoration: const InputDecoration(labelText: 'Número de Jefes'),
           ),
           ElevatedButton(
             onPressed: () {
               int numJefes = int.tryParse(numJefesController.text) ?? 0;
-              if (numJefes > 0) {
+              if (numJefes > 0 && !jefesIngresados) {
                 for (int i = 0; i < numJefes; i++) {
-                  jefes.add(Jefe('Jefe ${i + 1}'));
+                  jefes.add(Jefe.empty());
                 }
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return CrearEmpleadosDialog(
+                    return CrearJefesDialog(
                       jefes: jefes,
-                      organizadores: organizadores
                     );
                   },
-                );
+                ).then((_) {
+                  setState(() {
+                    jefesIngresados = true;
+                  }); // Actualizar la pantalla cuando se cierre el diálogo de creación de jefes
+                });
               } else {
                 // Mostrar mensaje de error
               }
             },
-            child: const Text('Ingresar Jefes y Empleados'),
+            child: const Text('Ingresar Jefes'),
           ),
           const SizedBox(height: 24.0),
-          // Aquí colocaremos la sección para crear eventos según el organizador
-          // La implementación dependerá de cómo quieras diseñar esta parte
+          // Botones de jefes
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: [
+              for (var jefe in jefes)
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GestorEmpleadosPage(
+                          jefe: jefe,
+                          empleados: empleados, // Pasa los empleados a la página de gestión de empleados
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(jefe.nombre),
+                ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
-class CrearEmpleadosDialog extends StatefulWidget {
-  final List<Jefe> jefes;
-  final List<Organizador> organizadores;
-  const CrearEmpleadosDialog({super.key, required this.jefes, required this.organizadores});
+class GestorEmpleadosPage extends StatefulWidget {
+  final Jefe jefe;
+  final List<Empleado> empleados; // Recibe los empleados aquí
+  const GestorEmpleadosPage({super.key, required this.jefe, required this.empleados});
 
   @override
-  State<CrearEmpleadosDialog>createState() => _CrearEmpleadosDialogState();
+  State<GestorEmpleadosPage> createState() => _GestorEmpleadosPageState();
 }
 
-class _CrearEmpleadosDialogState extends State<CrearEmpleadosDialog> {
-  final TextEditingController nombreEmpleadoController = TextEditingController();
-  TipoEmpleado? tipoEmpleadoSeleccionado;
+class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
+  final List<Empleado> empleados = [];
+  final TextEditingController nombreController = TextEditingController();
+  late TipoEmpleado tipoSeleccionado = TipoEmpleado.trabajador;
+
+  Empleado crearEmpleado(String nombre) {
+    switch (tipoSeleccionado) {
+      case TipoEmpleado.trabajador:
+        return Trabajador(nombre);
+      case TipoEmpleado.organizador:
+        return Organizador(nombre);
+      case TipoEmpleado.jefe:
+        return Jefe(nombre);
+      default:
+        throw Exception('Tipo de empleado no válido');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Gestor de Empleados para ${widget.jefe.nombre}'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: empleados.length,
+              itemBuilder: (context, index) {
+                final empleado = empleados[index];
+                return ListTile(
+                  title: Text(empleado.getNombre()),
+                );
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Mostrar un diálogo o navegar a una nueva pantalla para ingresar los detalles del nuevo empleado
+              _mostrarAgregarEmpleadoDialog(context);
+            },
+            child: const Text('Añadir Empleado'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _mostrarAgregarEmpleadoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Agregar Empleado'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: nombreController,
+                decoration: const InputDecoration(labelText: 'Nombre del empleado'),
+              ),
+              DropdownButtonFormField<TipoEmpleado>(
+                value: tipoSeleccionado,
+                onChanged: (value) {
+                  setState(() {
+                    tipoSeleccionado = value!;
+                  });
+                },
+                items: TipoEmpleado.values
+                    .map<DropdownMenuItem<TipoEmpleado>>((TipoEmpleado tipo) {
+                  return DropdownMenuItem<TipoEmpleado>(
+                    value: tipo,
+                    child: Text(tipo
+                        .toString()
+                        .split('.')
+                        .last), // Para mostrar solo el nombre del enum
+                  );
+                }).toList(),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  String nombre = nombreController.text;
+                  if (nombre.isNotEmpty) {
+                    Empleado nuevoEmpleado = crearEmpleado(nombre);
+                    setState(() {
+                      empleados.add(nuevoEmpleado);
+                      nombreController.clear();
+                    });
+                    Navigator.pop(context); // Cerrar el diálogo después de agregar el empleado
+                  }
+                },
+                child: const Text('Añadir'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+
+class CrearJefesDialog extends StatefulWidget {
+  final List<Jefe> jefes;
+  const CrearJefesDialog({super.key, required this.jefes});
+
+  @override
+  State<CrearJefesDialog> createState() => _CrearJefesDialogState();
+}
+
+class _CrearJefesDialogState extends State<CrearJefesDialog> {
+  final List<TextEditingController> nombreJefeControllers = [];
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Ingresar Empleados'),
+      title: const Text('Ingresar Nombre del Jefe'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          for (var jefe in widget.jefes)
+          for (var jefeIndex = 0; jefeIndex < widget.jefes.length; jefeIndex++)
             Column(
               children: [
-                Text('Jefe: ${jefe.nombre}'),
                 TextFormField(
-                  controller: nombreEmpleadoController,
-                  decoration: const InputDecoration(labelText: 'Nombre del Empleado'),
-                ),
-                DropdownButtonFormField<TipoEmpleado>(
-                  value: tipoEmpleadoSeleccionado,
-                  onChanged: (TipoEmpleado? newValue) {
-                    setState(() {
-                      tipoEmpleadoSeleccionado = newValue;
-                    });
-                  },
-                  items: TipoEmpleado.values.map<DropdownMenuItem<TipoEmpleado>>((TipoEmpleado value) {
-                    return DropdownMenuItem<TipoEmpleado>(
-                      value: value,
-                      child: Text(value.toString().split('.').last),
-                    );
-                  }).toList(),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    String nombreEmpleado = nombreEmpleadoController.text;
-                    if (tipoEmpleadoSeleccionado != null) {
-                      switch (tipoEmpleadoSeleccionado) {
-                        case TipoEmpleado.organizador:
-                          Organizador organizador = Organizador(nombreEmpleado);
-                          widget.organizadores.add(organizador); // Modificación aquí
-                          jefe.aniadeEmpleado(organizador);
-                          break;
-                        case TipoEmpleado.trabajador:
-                          jefe.aniadeEmpleado(Trabajador(nombreEmpleado));
-                          break;
-                        case TipoEmpleado.jefe:
-                          Jefe nuevoJefe = Jefe(nombreEmpleado);
-                          widget.jefes.add(nuevoJefe); // Modificación aquí
-                          jefe.aniadeEmpleado(nuevoJefe);
-                          break;
-                        default:
-                          break;
-                      }
-                      setState(() {
-                        nombreEmpleadoController.clear();
-                        tipoEmpleadoSeleccionado = null;
-                      });
-                    } else {
-                      // Mostrar mensaje de error indicando que se debe seleccionar un tipo de empleado
-                    }
-                  },
-                  child: const Text('Agregar Empleado'),
+                  controller: nombreJefeControllers[jefeIndex],
+                  decoration:
+                      const InputDecoration(labelText: 'Nombre del Jefe'),
                 ),
                 const SizedBox(height: 16.0),
               ],
             ),
           ElevatedButton(
             onPressed: () {
+              List<Jefe> nuevosJefes = [];
+              for (var i = 0; i < widget.jefes.length; i++) {
+                String nombreJefe = nombreJefeControllers[i].text;
+                if (nombreJefe.isNotEmpty) {
+                  widget.jefes[i].nombre = nombreJefe;
+                  nuevosJefes.add(widget.jefes[i]);
+                }
+              }
               Navigator.of(context).pop();
             },
             child: const Text('Finalizar'),
@@ -183,6 +279,22 @@ class _CrearEmpleadosDialogState extends State<CrearEmpleadosDialog> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializar los controladores
+    for (var _ in widget.jefes) {
+      nombreJefeControllers.add(TextEditingController());
+    }
+  }
+
+  @override
+  void dispose() {
+    // Liberar los controladores
+    for (var controller in nombreJefeControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 }
-
-
