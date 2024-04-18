@@ -7,6 +7,7 @@ import 'trabajador.dart';
 import 'conferencia_builder.dart';
 import 'boda_builder.dart';
 import 'tipo_empleado.dart';
+import 'tipo_evento.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
   bool jefesIngresados = false;
   final List<Jefe> jefes = [];
   final List<Organizador> organizadores = [];
-  final List<Empleado> empleados = []; // Almacena los empleados aquí
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +105,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                         builder: (context) => GestorEmpleadosPage(
                           jefe: jefe,
-                          empleados: empleados, // Pasa los empleados a la página de gestión de empleados
+                          jefes: jefes,
                         ),
                       ),
-                    );
+                    ).then((_) {
+                      // Actualizar la lista de jefes cuando se regrese a la página de inicio
+                      setState(() {});
+                    });
                   },
                   child: Text(jefe.nombre),
                 ),
@@ -122,17 +125,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class GestorEmpleadosPage extends StatefulWidget {
   final Jefe jefe;
-  final List<Empleado> empleados; // Recibe los empleados aquí
-  const GestorEmpleadosPage({super.key, required this.jefe, required this.empleados});
+  final List<Jefe> jefes;
+  const GestorEmpleadosPage(
+      {super.key, required this.jefe, required this.jefes});
 
   @override
   State<GestorEmpleadosPage> createState() => _GestorEmpleadosPageState();
 }
 
 class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
-  final List<Empleado> empleados = [];
   final TextEditingController nombreController = TextEditingController();
   late TipoEmpleado tipoSeleccionado = TipoEmpleado.trabajador;
+  late TipoEvento eventoSeleccionado = TipoEvento.boda;
+  final TextEditingController nombreEvController = TextEditingController();
+  final TextEditingController fechaController = TextEditingController();
+  final TextEditingController ubiController = TextEditingController();
 
   Empleado crearEmpleado(String nombre) {
     switch (tipoSeleccionado) {
@@ -141,10 +148,117 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
       case TipoEmpleado.organizador:
         return Organizador(nombre);
       case TipoEmpleado.jefe:
-        return Jefe(nombre);
+        Jefe nuevo = Jefe(nombre);
+        widget.jefes.add(nuevo);
+        return nuevo;
       default:
         throw Exception('Tipo de empleado no válido');
     }
+  }
+
+  // Función para crear un evento
+  void _crearEvento(BuildContext context, Organizador organizadorSeleccionado) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Crear Evento'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Aquí puedes agregar los campos necesarios para crear un evento
+                // Por ejemplo:
+                DropdownButtonFormField<TipoEvento>(
+                  value: eventoSeleccionado,
+                  onChanged: (value) {
+                    setState(() {
+                      eventoSeleccionado = value!;
+                    });
+                  },
+                  items: TipoEvento.values
+                      .map<DropdownMenuItem<TipoEvento>>((TipoEvento tipo) {
+                    return DropdownMenuItem<TipoEvento>(
+                      value: tipo,
+                      child: Text(tipo
+                          .toString()
+                          .split('.')
+                          .last), // Para mostrar solo el nombre del enum
+                    );
+                  }).toList(),
+                ),
+                TextFormField(
+                  controller: nombreEvController,
+                  decoration:
+                      const InputDecoration(labelText: 'Título del evento'),
+                ),
+                TextFormField(
+                  controller: fechaController,
+                  decoration:
+                      const InputDecoration(labelText: 'Fecha del evento'),
+                ),
+                TextFormField(
+                  controller: ubiController,
+                  decoration:
+                      const InputDecoration(labelText: 'Ubicación del evento'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    String nombre = nombreEvController.text;
+                    if (nombre.isNotEmpty) {
+                      if (eventoSeleccionado == TipoEvento.boda) {
+                        EventoBuilder constructor = BodaBuilder();
+                        organizadorSeleccionado.setBuilder(constructor);
+                        organizadorSeleccionado.construirEvento(nombreEvController.text, fechaController.text, ubiController.text);
+                      } else if (eventoSeleccionado == TipoEvento.conferencia) {
+                        EventoBuilder constructor = ConferenciaBuilder();
+                        organizadorSeleccionado.setBuilder(constructor);
+                        organizadorSeleccionado.construirEvento(nombreEvController.text, fechaController.text, ubiController.text);
+                      }
+                    }
+                    Navigator.pop(
+                        context); // Cerrar el diálogo después de agregar el empleado
+                  },
+                  child: const Text('Crear Evento'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _mostrarEvento(BuildContext context, Organizador organizadorSeleccionado) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Evento'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                 Text(
+                  'Nombre: ${organizadorSeleccionado.getEvento().nombre}'
+                ),
+                Text(
+                    'Fecha: ${organizadorSeleccionado.getEvento().fecha}'
+                ),
+                Text(
+                    'Ubicación: ${organizadorSeleccionado.getEvento().ubicacion}'
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Cerrar el diálogo
+                  },
+                  child: const Text('Salir'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -157,12 +271,28 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: empleados.length,
+              itemCount: widget.jefe.empleados.length,
               itemBuilder: (context, index) {
-                final empleado = empleados[index];
-                return ListTile(
-                  title: Text(empleado.getNombre()),
-                );
+                final empleado = widget.jefe.empleados[index];
+                if (empleado is Organizador) {
+                  return ListTile(
+                    title: Text(empleado.getNombre()),
+                    onTap: () {
+                      // Al hacer tap en el organizador, se abre el formulario para crear un evento
+                      if(!empleado.tieneEvento){
+                        _crearEvento(context, empleado);
+                      }
+                      else{
+                        _mostrarEvento(context, empleado);
+                      }
+
+                    },
+                  );
+                } else {
+                  return ListTile(
+                    title: Text(empleado.getNombre()),
+                  );
+                }
               },
             ),
           ),
@@ -189,7 +319,8 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
             children: [
               TextFormField(
                 controller: nombreController,
-                decoration: const InputDecoration(labelText: 'Nombre del empleado'),
+                decoration:
+                    const InputDecoration(labelText: 'Nombre del empleado'),
               ),
               DropdownButtonFormField<TipoEmpleado>(
                 value: tipoSeleccionado,
@@ -215,10 +346,11 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
                   if (nombre.isNotEmpty) {
                     Empleado nuevoEmpleado = crearEmpleado(nombre);
                     setState(() {
-                      empleados.add(nuevoEmpleado);
+                      widget.jefe.aniadeEmpleado(nuevoEmpleado);
                       nombreController.clear();
                     });
-                    Navigator.pop(context); // Cerrar el diálogo después de agregar el empleado
+                    Navigator.pop(
+                        context); // Cerrar el diálogo después de agregar el empleado
                   }
                 },
                 child: const Text('Añadir'),
@@ -230,7 +362,6 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
     );
   }
 }
-
 
 class CrearJefesDialog extends StatefulWidget {
   final List<Jefe> jefes;

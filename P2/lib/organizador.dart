@@ -5,6 +5,7 @@ import 'empleado.dart';
 class Organizador implements Empleado {
   late EventoBuilder _builder;
   late String _nombreOrg;
+  late bool tieneEvento = false;
 
   Organizador(String nombreOrg) {
     _nombreOrg = nombreOrg;
@@ -14,6 +15,7 @@ class Organizador implements Empleado {
     _builder.construirNombre(nombre);
     _builder.construirFecha(fecha);
     _builder.construirUbicacion(ubicacion);
+    tieneEvento = true;
   }
 
   Evento getEvento() {

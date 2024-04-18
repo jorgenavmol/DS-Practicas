@@ -3,7 +3,7 @@ import 'empleado.dart';
 
 class Jefe implements Empleado {
   late String nombre;
-  final List<Empleado> _empleados = [];
+  final List<Empleado> empleados = [];
 
   Jefe(String nomb) {
     nombre = nomb;
@@ -14,11 +14,11 @@ class Jefe implements Empleado {
   }
 
   void aniadeEmpleado(Empleado empleado) {
-    _empleados.add(empleado);
+    empleados.add(empleado);
   }
 
   void eliminaEmpleado(Empleado empleado) {
-    _empleados.remove(empleado);
+    empleados.remove(empleado);
   }
 
   @override
@@ -27,6 +27,6 @@ class Jefe implements Empleado {
   }
 
   List<Empleado> getEquipo() {
-    return _empleados;
+    return empleados;
   }
 }
