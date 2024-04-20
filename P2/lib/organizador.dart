@@ -6,6 +6,7 @@ class Organizador implements Empleado {
   late EventoBuilder _builder;
   late String _nombreOrg;
   late bool tieneEvento = false;
+  late String nombreJefe;
 
   Organizador(String nombreOrg) {
     _nombreOrg = nombreOrg;

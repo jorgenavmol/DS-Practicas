@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
             decoration: const InputDecoration(labelText: 'Número de Jefes'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed:() {
               int numJefes = int.tryParse(numJefesController.text) ?? 0;
               if (numJefes > 0 && !jefesIngresados) {
                 for (int i = 0; i < numJefes; i++) {
@@ -106,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (context) => GestorEmpleadosPage(
                           jefe: jefe,
                           jefes: jefes,
+                          organizadores: organizadores,
                         ),
                       ),
                     ).then((_) {
@@ -117,6 +118,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
             ],
           ),
+          const SizedBox(height: 24.0),
+          const Text(
+            'Resumen eventos:',
+            style: TextStyle(fontSize: 24.0),
+          ),
+          // Mostrar el resumen de eventos aquí
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var organizador in organizadores)
+                if (organizador.tieneEvento)
+                  Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            organizador.getNombre(),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Jefe: ${organizador.nombreJefe}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                           Text('Nombre: ${organizador.getEvento().nombre}'),
+                           Text('Fecha: ${organizador.getEvento().fecha}'),
+                           Text('Ubicación: ${organizador.getEvento().ubicacion}'),
+                        ],
+                      ),
+                    ),
+                  ),
+            ],
+          ),
         ],
       ),
     );
@@ -126,8 +162,9 @@ class _MyHomePageState extends State<MyHomePage> {
 class GestorEmpleadosPage extends StatefulWidget {
   final Jefe jefe;
   final List<Jefe> jefes;
+  final List<Organizador> organizadores;
   const GestorEmpleadosPage(
-      {super.key, required this.jefe, required this.jefes});
+      {super.key, required this.jefe, required this.jefes, required this.organizadores});
 
   @override
   State<GestorEmpleadosPage> createState() => _GestorEmpleadosPageState();
@@ -146,7 +183,10 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
       case TipoEmpleado.trabajador:
         return Trabajador(nombre);
       case TipoEmpleado.organizador:
-        return Organizador(nombre);
+        Organizador nuevoOrg = Organizador(nombre);
+        widget.organizadores.add(nuevoOrg);
+        nuevoOrg.nombreJefe = widget.jefe.nombre;
+        return nuevoOrg;
       case TipoEmpleado.jefe:
         Jefe nuevo = Jefe(nombre);
         widget.jefes.add(nuevo);
