@@ -17,10 +17,6 @@ class Jefe implements Empleado {
     empleados.add(empleado);
   }
 
-  void eliminaEmpleado(Empleado empleado) {
-    empleados.remove(empleado);
-  }
-
   @override
   String getNombre() {
     return "Jefe - $nombre";
