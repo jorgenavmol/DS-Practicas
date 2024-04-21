@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Creador de Eventos',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.greenAccent,
+          seedColor: Colors.lightBlueAccent,
         ),
         useMaterial3: true,
       ),
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             'Resumen eventos:',
             style: TextStyle(fontSize: 24.0),
           ),
-          // Mostrar el resumen de eventos aquí
+          // Mostrar el resumen de eventos
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -374,7 +374,6 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
           content: SingleChildScrollView(
             child: Column(
               children: [
-                // Aquí puedes agregar los campos necesarios para crear un evento
                 // Por ejemplo:
                 DropdownButtonFormField<TipoEvento>(
                   value: eventoSeleccionado,
