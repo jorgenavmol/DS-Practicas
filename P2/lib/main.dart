@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Creador de Eventos',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.greenAccent,
+          seedColor: Colors.lightBlueAccent,
         ),
         useMaterial3: true,
       ),
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             'Resumen eventos:',
             style: TextStyle(fontSize: 24.0),
           ),
-          // Mostrar el resumen de eventos aquí
+          // Mostrar el resumen de eventos
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -159,6 +159,73 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class CrearJefesDialog extends StatefulWidget {
+  final List<Jefe> jefes;
+  const CrearJefesDialog({super.key, required this.jefes});
+
+  @override
+  State<CrearJefesDialog> createState() => _CrearJefesDialogState();
+}
+
+class _CrearJefesDialogState extends State<CrearJefesDialog> {
+  final List<TextEditingController> nombreJefeControllers = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Ingresar Nombre del Jefe'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var jefeIndex = 0; jefeIndex < widget.jefes.length; jefeIndex++)
+            Column(
+              children: [
+                TextFormField(
+                  controller: nombreJefeControllers[jefeIndex],
+                  decoration:
+                  const InputDecoration(labelText: 'Nombre del Jefe'),
+                ),
+                const SizedBox(height: 16.0),
+              ],
+            ),
+          ElevatedButton(
+            onPressed: () {
+              List<Jefe> nuevosJefes = [];
+              for (var i = 0; i < widget.jefes.length; i++) {
+                String nombreJefe = nombreJefeControllers[i].text;
+                if (nombreJefe.isNotEmpty) {
+                  widget.jefes[i].nombre = nombreJefe;
+                  nuevosJefes.add(widget.jefes[i]);
+                }
+              }
+              Navigator.of(context).pop();
+            },
+            child: const Text('Finalizar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializar los controladores
+    for (var _ in widget.jefes) {
+      nombreJefeControllers.add(TextEditingController());
+    }
+  }
+
+  @override
+  void dispose() {
+    // Liberar los controladores
+    for (var controller in nombreJefeControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+}
+
 class GestorEmpleadosPage extends StatefulWidget {
   final Jefe jefe;
   final List<Jefe> jefes;
@@ -177,131 +244,6 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
   final TextEditingController nombreEvController = TextEditingController();
   final TextEditingController fechaController = TextEditingController();
   final TextEditingController ubiController = TextEditingController();
-
-  Empleado crearEmpleado(String nombre) {
-    switch (tipoSeleccionado) {
-      case TipoEmpleado.trabajador:
-        return Trabajador(nombre);
-      case TipoEmpleado.organizador:
-        Organizador nuevoOrg = Organizador(nombre);
-        widget.organizadores.add(nuevoOrg);
-        nuevoOrg.nombreJefe = widget.jefe.nombre;
-        return nuevoOrg;
-      case TipoEmpleado.jefe:
-        Jefe nuevo = Jefe(nombre);
-        widget.jefes.add(nuevo);
-        return nuevo;
-      default:
-        throw Exception('Tipo de empleado no válido');
-    }
-  }
-
-  // Función para crear un evento
-  void _crearEvento(BuildContext context, Organizador organizadorSeleccionado) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Crear Evento'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Aquí puedes agregar los campos necesarios para crear un evento
-                // Por ejemplo:
-                DropdownButtonFormField<TipoEvento>(
-                  value: eventoSeleccionado,
-                  onChanged: (value) {
-                    setState(() {
-                      eventoSeleccionado = value!;
-                    });
-                  },
-                  items: TipoEvento.values
-                      .map<DropdownMenuItem<TipoEvento>>((TipoEvento tipo) {
-                    return DropdownMenuItem<TipoEvento>(
-                      value: tipo,
-                      child: Text(tipo
-                          .toString()
-                          .split('.')
-                          .last), // Para mostrar solo el nombre del enum
-                    );
-                  }).toList(),
-                ),
-                TextFormField(
-                  controller: nombreEvController,
-                  decoration:
-                      const InputDecoration(labelText: 'Título del evento'),
-                ),
-                TextFormField(
-                  controller: fechaController,
-                  decoration:
-                      const InputDecoration(labelText: 'Fecha del evento'),
-                ),
-                TextFormField(
-                  controller: ubiController,
-                  decoration:
-                      const InputDecoration(labelText: 'Ubicación del evento'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    String nombre = nombreEvController.text;
-                    String fecha = fechaController.text;
-                    String ubi = ubiController.text;
-                    if (nombre.isNotEmpty && fecha.isNotEmpty && ubi.isNotEmpty) {
-                      if (eventoSeleccionado == TipoEvento.boda) {
-                        EventoBuilder constructor = BodaBuilder();
-                        organizadorSeleccionado.setBuilder(constructor);
-                        organizadorSeleccionado.construirEvento(nombre, fecha, ubi);
-                      } else if (eventoSeleccionado == TipoEvento.conferencia) {
-                        EventoBuilder constructor = ConferenciaBuilder();
-                        organizadorSeleccionado.setBuilder(constructor);
-                        organizadorSeleccionado.construirEvento(nombre, fecha, ubi);
-                      }
-                    }
-                    Navigator.pop(
-                        context); // Cerrar el diálogo después de agregar el empleado
-                  },
-                  child: const Text('Crear Evento'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _mostrarEvento(BuildContext context, Organizador organizadorSeleccionado) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Evento'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                 Text(
-                  'Nombre: ${organizadorSeleccionado.getEvento().nombre}'
-                ),
-                Text(
-                    'Fecha: ${organizadorSeleccionado.getEvento().fecha}'
-                ),
-                Text(
-                    'Ubicación: ${organizadorSeleccionado.getEvento().ubicacion}'
-                ),
-
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Cerrar el diálogo
-                  },
-                  child: const Text('Salir'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -403,71 +345,129 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
       },
     );
   }
-}
 
-class CrearJefesDialog extends StatefulWidget {
-  final List<Jefe> jefes;
-  const CrearJefesDialog({super.key, required this.jefes});
+  Empleado crearEmpleado(String nombre) {
+    switch (tipoSeleccionado) {
+      case TipoEmpleado.trabajador:
+        return Trabajador(nombre);
+      case TipoEmpleado.organizador:
+        Organizador nuevoOrg = Organizador(nombre);
+        widget.organizadores.add(nuevoOrg);
+        nuevoOrg.nombreJefe = widget.jefe.nombre;
+        return nuevoOrg;
+      case TipoEmpleado.jefe:
+        Jefe nuevo = Jefe(nombre);
+        widget.jefes.add(nuevo);
+        return nuevo;
+      default:
+        throw Exception('Tipo de empleado no válido');
+    }
+  }
 
-  @override
-  State<CrearJefesDialog> createState() => _CrearJefesDialogState();
-}
-
-class _CrearJefesDialogState extends State<CrearJefesDialog> {
-  final List<TextEditingController> nombreJefeControllers = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Ingresar Nombre del Jefe'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (var jefeIndex = 0; jefeIndex < widget.jefes.length; jefeIndex++)
-            Column(
+  // Función para crear un evento
+  void _crearEvento(BuildContext context, Organizador organizadorSeleccionado) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Crear Evento'),
+          content: SingleChildScrollView(
+            child: Column(
               children: [
-                TextFormField(
-                  controller: nombreJefeControllers[jefeIndex],
-                  decoration:
-                      const InputDecoration(labelText: 'Nombre del Jefe'),
+                // Por ejemplo:
+                DropdownButtonFormField<TipoEvento>(
+                  value: eventoSeleccionado,
+                  onChanged: (value) {
+                    setState(() {
+                      eventoSeleccionado = value!;
+                    });
+                  },
+                  items: TipoEvento.values
+                      .map<DropdownMenuItem<TipoEvento>>((TipoEvento tipo) {
+                    return DropdownMenuItem<TipoEvento>(
+                      value: tipo,
+                      child: Text(tipo
+                          .toString()
+                          .split('.')
+                          .last), // Para mostrar solo el nombre del enum
+                    );
+                  }).toList(),
                 ),
-                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: nombreEvController,
+                  decoration:
+                  const InputDecoration(labelText: 'Título del evento'),
+                ),
+                TextFormField(
+                  controller: fechaController,
+                  decoration:
+                  const InputDecoration(labelText: 'Fecha del evento'),
+                ),
+                TextFormField(
+                  controller: ubiController,
+                  decoration:
+                  const InputDecoration(labelText: 'Ubicación del evento'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    String nombre = nombreEvController.text;
+                    String fecha = fechaController.text;
+                    String ubi = ubiController.text;
+                    if (nombre.isNotEmpty && fecha.isNotEmpty && ubi.isNotEmpty) {
+                      if (eventoSeleccionado == TipoEvento.boda) {
+                        EventoBuilder constructor = BodaBuilder();
+                        organizadorSeleccionado.setBuilder(constructor);
+                        organizadorSeleccionado.construirEvento(nombre, fecha, ubi);
+                      } else if (eventoSeleccionado == TipoEvento.conferencia) {
+                        EventoBuilder constructor = ConferenciaBuilder();
+                        organizadorSeleccionado.setBuilder(constructor);
+                        organizadorSeleccionado.construirEvento(nombre, fecha, ubi);
+                      }
+                    }
+                    Navigator.pop(
+                        context); // Cerrar el diálogo después de agregar el empleado
+                  },
+                  child: const Text('Crear Evento'),
+                ),
               ],
             ),
-          ElevatedButton(
-            onPressed: () {
-              List<Jefe> nuevosJefes = [];
-              for (var i = 0; i < widget.jefes.length; i++) {
-                String nombreJefe = nombreJefeControllers[i].text;
-                if (nombreJefe.isNotEmpty) {
-                  widget.jefes[i].nombre = nombreJefe;
-                  nuevosJefes.add(widget.jefes[i]);
-                }
-              }
-              Navigator.of(context).pop();
-            },
-            child: const Text('Finalizar'),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // Inicializar los controladores
-    for (var _ in widget.jefes) {
-      nombreJefeControllers.add(TextEditingController());
-    }
+  void _mostrarEvento(BuildContext context, Organizador organizadorSeleccionado) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Evento'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                    'Nombre: ${organizadorSeleccionado.getEvento().nombre}'
+                ),
+                Text(
+                    'Fecha: ${organizadorSeleccionado.getEvento().fecha}'
+                ),
+                Text(
+                    'Ubicación: ${organizadorSeleccionado.getEvento().ubicacion}'
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Cerrar el diálogo
+                  },
+                  child: const Text('Salir'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  @override
-  void dispose() {
-    // Liberar los controladores
-    for (var controller in nombreJefeControllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
 }

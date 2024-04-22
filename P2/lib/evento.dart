@@ -9,7 +9,7 @@ class Evento {
   Evento();
 
   // Named constructor
-  Evento.conDatos(this.nombre, this.fecha, this.ubicacion/*, this.catering*/);
+  Evento.conDatos(this.nombre, this.fecha, this.ubicacion);
 
   String mostrarEvento() {
     String infoEvento = '''
