@@ -52,20 +52,23 @@ void main() {
     }
 
     test('La función getNombre() devuelve el nombre correctamente', () {
+      //PRIMERO
       String nombreJefe = "Jefe - Sr. Jefe";
       expect(jefe.getNombre(), nombreJefe);
     });
 
     test('Los jefes se crean correctamente', () {
+      //SEGUNDO
       expect(jefe.getNombre(), "Jefe - Sr. Jefe");
-      expect(jefe.getEquipo().length, 0);
+      expect(jefe.empleados.length, 0);
       expect(subJefe.getNombre(), "Jefe - Sr. SubJefe");
-      expect(subJefe.getEquipo().length, 0);
+      expect(subJefe.empleados.length, 0);
       expect(jefeVacio.getNombre(), "Jefe - ");
-      expect(jefeVacio.getEquipo().length, 0);
+      expect(jefeVacio.empleados.length, 0);
     });
 
     test('Los empleados se agregan correctamente', () {
+      //TERCERO
       agregarEmpleados();
       expect(jefe.empleados.length, 3);
       expect(jefe.empleados[0].getNombre(), "Trabajador - Sr. Trabajador");
@@ -81,32 +84,8 @@ void main() {
           "Organizador - Sra. SubOrganizadora");
     });
 
-    test('El tipo de empleado es el correcto', () {
-      //TipoEmpleado solo lo usamos en el main para los botones de la interfaz, no hay un atributo TipoEmpleado en cada clase que inicialicemos
-      expect(trabajador, isA<Trabajador>());
-      expect(organizador, isA<Organizador>());
-      expect(subJefe, isA<Jefe>());
-      expect(subTrabajador1, isA<Trabajador>());
-      expect(subTrabajador2, isA<Trabajador>());
-      expect(subOrganizador, isA<Organizador>());
-    });
-
-    test('Los empleados se eliminan correctamente', () {
-      agregarEmpleados();
-      jefe.eliminaEmpleado(trabajador);
-      expect(jefe.empleados.length, 2);
-      expect(jefe.empleados[0].getNombre(), "Organizador - Sr. Organizador");
-      expect(jefe.empleados[1].getNombre(), "Jefe - Sr. SubJefe");
-
-      subJefe.eliminaEmpleado(subTrabajador1);
-      expect(subJefe.empleados.length, 2);
-      expect(
-          subJefe.empleados[0].getNombre(), "Trabajador - Sr. SubTrabajador2");
-      expect(subJefe.empleados[1].getNombre(),
-          "Organizador - Sra. SubOrganizadora");
-    });
-
-    test('Se obtiene correctamente el equipo de un subjefe', () {
+    test('Se obtiene correctamente el equipo de un jefe correctamente', () {
+      //CUARTO
       agregarEmpleados();
       //ACCEDE AL SUBJEFE EN LA LISTA DE EMPLEADOS DEL JEFE
       Jefe subjefe = (jefe.getEquipo()[2] as Jefe);
@@ -118,6 +97,33 @@ void main() {
       expect(equipoSubJefe[1].getNombre(), "Trabajador - Sr. SubTrabajador2");
       expect(
           equipoSubJefe[2].getNombre(), "Organizador - Sra. SubOrganizadora");
+    });
+
+    test('Los empleados se eliminan correctamente', () {
+      //QUINTO
+      agregarEmpleados();
+      jefe.eliminaEmpleado(trabajador);
+      expect(jefe.getEquipo().length, 2);
+      expect(jefe.getEquipo()[0].getNombre(), "Organizador - Sr. Organizador");
+      expect(jefe.getEquipo()[1].getNombre(), "Jefe - Sr. SubJefe");
+
+      subJefe.eliminaEmpleado(subTrabajador1);
+      expect(subJefe.getEquipo().length, 2);
+      expect(subJefe.getEquipo()[0].getNombre(),
+          "Trabajador - Sr. SubTrabajador2");
+      expect(subJefe.getEquipo()[1].getNombre(),
+          "Organizador - Sra. SubOrganizadora");
+    });
+
+    test('El tipo de empleado es el correcto', () {
+      //SEXTO
+      //TipoEmpleado solo lo usamos en el main para los botones de la interfaz, no hay un atributo TipoEmpleado en cada clase que inicialicemos
+      expect(trabajador, isA<Trabajador>());
+      expect(organizador, isA<Organizador>());
+      expect(subJefe, isA<Jefe>());
+      expect(subTrabajador1, isA<Trabajador>());
+      expect(subTrabajador2, isA<Trabajador>());
+      expect(subOrganizador, isA<Organizador>());
     });
   });
 
