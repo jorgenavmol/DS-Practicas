@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:p2/boda_builder.dart';
 import 'package:p2/empleado.dart';
+import 'package:p2/evento.dart';
 import 'package:p2/evento_builder.dart';
 import 'package:p2/jefe.dart';
 
@@ -138,24 +139,46 @@ void main() {
   group("Tests de Organizador", () {
     late Organizador organizador;
     late EventoBuilder constructor;
+    late Evento evento;
 
     setUp(() {
       constructor = BodaBuilder();
       organizador = Organizador("Sr. Organizador");
       organizador.setBuilder(constructor);
       organizador.construirEvento("Boda", "01/01/2022", "Mi casa");
+      evento = organizador.getEvento();
     });
 
     test('El organizador se crea correctamente', () {
       expect(organizador.getNombre(), "Organizador - Sr. Organizador");
     });
 
+    test('Al Organizador se le es asignado un EventoBuilder correctamente', () {
+      expect(evento, isA<BodaBuilder>());
+    });
+
     test('El evento se construye correctamente', () {
       expect(organizador.tieneEvento, true);
-      expect(organizador.getEvento().nombre, "Boda");
-      expect(organizador.getEvento().fecha, "01/01/2022");
-      expect(organizador.getEvento().ubicacion, "Mi casa");
+      expect(evento.nombre, "Boda");
+      expect(evento.fecha, "01/01/2022");
+      expect(evento.ubicacion, "Mi casa");
     });
+    
+
+    test('Un Evento puede cambiar su nombre', () {
+      evento.cambiarNombre('Divorcio');
+      expect(evento.nombre, 'Divorcio');
+    });
+
+    test('Un Evento puede cambiar su fecha', () {
+      evento.cambiarFecha('14/02/2022');
+      expect(evento.fecha, '14/02/2022');
+    });
+
+    test('Un Evento puede cambiar su lugar', () {
+      evento.cambiarUbicacion('Juzgados');
+      expect(evento.ubicacion, 'Juzgados');
+    });    
   });
 
   group("Test de botones", () {

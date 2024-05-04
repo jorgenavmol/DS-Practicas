@@ -19,4 +19,19 @@ class Evento {
       ''';
     return infoEvento;
   }
+
+  //AÑADIDA.
+  void cambiarNombre(String nuevoNombre) {
+    nombre = nuevoNombre;
+  }
+
+  //AÑADIDA.
+  void cambiarFecha(String nuevaFecha) {
+    fecha = nuevaFecha;
+  }
+
+  //AÑADIDA.
+  void cambiarUbicacion(String nuevaUbicacion) {
+    ubicacion = nuevaUbicacion;
+  }
 }

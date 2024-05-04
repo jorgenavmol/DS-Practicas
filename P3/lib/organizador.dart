@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'evento_builder.dart';
 import 'evento.dart';
 import 'empleado.dart';
@@ -17,6 +19,11 @@ class Organizador implements Empleado {
     _builder.construirFecha(fecha);
     _builder.construirUbicacion(ubicacion);
     tieneEvento = true;
+  }
+
+  //AÑADIDA.
+  EventoBuilder getBuilder() {
+    return _builder;
   }
 
   Evento getEvento() {
