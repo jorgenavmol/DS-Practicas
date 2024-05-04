@@ -55,21 +55,22 @@ void main() {
       jefe.aniadeEmpleado(subJefe);
 
       //ASIGNAMOS EL EMPLEADO AL SUBJEFE.
-      subJefe.aniadeEmpleado(subTrabajador);      
+      subJefe.aniadeEmpleado(subTrabajador);
     });
 
-    test('Los jefes se crean correctamente', (){
-      expect(jefe.getNombre(), "Sr. Jefe");   
+    test('Los jefes se crean correctamente', () {
+      expect(jefe.getNombre(), "Sr. Jefe");
     });
 
-    test('Los empleados se agregan correctamente', (){
+    test('Los empleados se agregan correctamente', () {
       expect(jefe.empleados.length, 3);
       expect(jefe.empleados[0].getNombre(), "Trabajador - Sr. Trabajador");
       expect(jefe.empleados[1].getNombre(), "Organizador - Sr. Organizador");
       expect(jefe.empleados[2].getNombre(), "Jefe - Sr. SubJefe");
 
       expect(subJefe.empleados.length, 1);
-      expect(subJefe.empleados[0].getNombre(), "Trabajador - Sr. SubTrabajador");
+      expect(
+          subJefe.empleados[0].getNombre(), "Trabajador - Sr. SubTrabajador");
     });
   });
 
@@ -84,11 +85,11 @@ void main() {
       organizador.construirEvento("Boda", "01/01/2022", "Mi casa");
     });
 
-    test('El organizador se crea correctamente', (){
+    test('El organizador se crea correctamente', () {
       expect(organizador.getNombre(), "Organizador - Sr. Organizador");
     });
 
-    test('El evento se construye correctamente', (){
+    test('El evento se construye correctamente', () {
       expect(organizador.tieneEvento, true);
       expect(organizador.getEvento().nombre, "Boda");
       expect(organizador.getEvento().fecha, "01/01/2022");
@@ -97,32 +98,25 @@ void main() {
   });
 
   group("Test de botones", () {
-
     testWidgets('Test botón Ingresar Jefes', (WidgetTester tester) async {
-    // Construye la aplicación y dispara un frame.
-    await tester.pumpWidget(const MyApp());
+      // Construye la aplicación y dispara un frame.
+      await tester.pumpWidget(const MyApp());
 
-    // Encuentra el botón Finalizar por el texto.
-    Finder botonIngresar = find.text('Ingresar Jefes');
+      // Encuentra el botón Finalizar por el texto.
+      Finder botonIngresar = find.text('Ingresar Jefes');
 
-    // Verifica que el botón Finalizar se encuentra en la pantalla.
-    expect(botonIngresar, findsOneWidget);
+      // Verifica que el botón Finalizar se encuentra en la pantalla.
+      expect(botonIngresar, findsOneWidget);
 
-    // Toca el botón Finalizar y dispara un frame.
-    await tester.tap(botonIngresar);
-    await tester.pump();
+      // Toca el botón Finalizar y dispara un frame.
+      await tester.tap(botonIngresar);
+      await tester.pump();
 
-    /* // Verifica que se muestra un diálogo.
+      /* // Verifica que se muestra un diálogo.
     expect(find.byType(Dialog), findsOneWidget); */
 
-    // Aquí puedes agregar más verificaciones para el diálogo, como verificar que contiene un campo de texto para introducir el nombre del jefe.
-    expect(find.byType(TextField), findsOneWidget);
+      // Aquí puedes agregar más verificaciones para el diálogo, como verificar que contiene un campo de texto para introducir el nombre del jefe.
+      expect(find.byType(TextField), findsOneWidget);
+    });
   });
-
-
-
-  });
-
-  
-
 }
