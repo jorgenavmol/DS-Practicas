@@ -87,6 +87,15 @@ void main() {
     test('Se obtiene correctamente el equipo de un jefe correctamente', () {
       //CUARTO
       agregarEmpleados();
+
+      //ACCEDE A LA LISTA DE EMPLEADOS DEL JEFE
+      List<Empleado> equipoJefe = jefe.getEquipo();
+
+      expect(equipoJefe.length, 3);
+      expect(equipoJefe[0].getNombre(), "Trabajador - Sr. Trabajador");
+      expect(equipoJefe[1].getNombre(), "Organizador - Sr. Organizador");
+      expect(equipoJefe[2].getNombre(), "Jefe - Sr. SubJefe");
+
       //ACCEDE AL SUBJEFE EN LA LISTA DE EMPLEADOS DEL JEFE
       Jefe subjefe = (jefe.getEquipo()[2] as Jefe);
       //ACCEDE A LA LISTA DE EMPLEADOS DE ESE SUBJEFE
@@ -95,8 +104,7 @@ void main() {
       expect(equipoSubJefe.length, 3);
       expect(equipoSubJefe[0].getNombre(), "Trabajador - Sr. SubTrabajador1");
       expect(equipoSubJefe[1].getNombre(), "Trabajador - Sr. SubTrabajador2");
-      expect(
-          equipoSubJefe[2].getNombre(), "Organizador - Sra. SubOrganizadora");
+      expect(equipoSubJefe[2].getNombre(), "Organizador - Sra. SubOrganizadora");
     });
 
     test('Los empleados se eliminan correctamente', () {
