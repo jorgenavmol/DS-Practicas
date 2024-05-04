@@ -154,7 +154,7 @@ void main() {
     });
 
     test('Al Organizador se le es asignado un EventoBuilder correctamente', () {
-      expect(evento, isA<BodaBuilder>());
+      expect(constructor, isA<BodaBuilder>());
     });
 
     test('El evento se construye correctamente', () {
