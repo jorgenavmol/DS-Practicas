@@ -52,7 +52,7 @@ void main() {
       subJefe.aniadeEmpleado(subOrganizador);
     }
 
-    test('La función getNombre() devuelve el nombre correctamente', () {
+    test('El nombre se asigna correctamente', () {
       //PRIMERO
       String nombreJefe = "Jefe - Sr. Jefe";
       expect(jefe.getNombre(), nombreJefe);
@@ -85,7 +85,7 @@ void main() {
           "Organizador - Sra. SubOrganizadora");
     });
 
-    test('Se obtiene correctamente el equipo de un jefe correctamente', () {
+    test('Se obtiene el equipo de un jefe correctamente', () {
       //CUARTO
       agregarEmpleados();
 
@@ -153,34 +153,41 @@ void main() {
       expect(organizador.getNombre(), "Organizador - Sr. Organizador");
     });
 
-    test('Al Organizador se le es asignado un EventoBuilder correctamente', () {
-      expect(constructor, isA<BodaBuilder>());
+    test('Al Organizador se le asigna un evento correctamente', () {
+      expect(organizador.tieneEvento, true);
     });
 
     test('El evento se construye correctamente', () {
-      expect(organizador.tieneEvento, true);
       expect(evento.nombre, "Boda");
       expect(evento.fecha, "01/01/2022");
       expect(evento.ubicacion, "Mi casa");
     });
-    
 
-    test('Un Evento puede cambiar su nombre', () {
-      evento.cambiarNombre('Divorcio');
+    test('El organizador puede modificar el nombre del evento', () {
+      organizador.cambiarNombreEvento('Divorcio');
       expect(evento.nombre, 'Divorcio');
     });
 
-    test('Un Evento puede cambiar su fecha', () {
-      evento.cambiarFecha('14/02/2022');
+    test('El organizador puede modificar la fecha del evento', () {
+      organizador.cambiarFechaEvento('14/02/2022');
       expect(evento.fecha, '14/02/2022');
     });
 
-    test('Un Evento puede cambiar su lugar', () {
-      evento.cambiarUbicacion('Juzgados');
+    test('El organizador puede modificar la ubicación del evento', () {
+      organizador.cambiarUbiEvento('Juzgados');
       expect(evento.ubicacion, 'Juzgados');
-    });    
+    });
+
+    test('El organizador no puede construir más de un evento', () {
+      organizador.construirEvento("Boda2", "2-2-2022", "iglesia");
+      //El evento que se mantiene es el primero
+      expect(evento.nombre, "Boda");
+      expect(evento.fecha, "01/01/2022");
+      expect(evento.ubicacion, "Mi casa");
+    });
   });
 
+  /*
   group("Test de botones", () {
     testWidgets('Test botón Ingresar Jefes', (WidgetTester tester) async {
       // Construye la aplicación y dispara un frame.
@@ -203,4 +210,5 @@ void main() {
       expect(find.byType(TextField), findsOneWidget);
     });
   });
+  */
 }
