@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -144,9 +145,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             'Jefe: ${organizador.nombreJefe}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                           Text('Nombre: ${organizador.getEvento().nombre}'),
-                           Text('Fecha: ${organizador.getEvento().fecha}'),
-                           Text('Ubicación: ${organizador.getEvento().ubicacion}'),
+                          Text('Nombre: ${organizador.getEvento().nombre}'),
+                          Text('Fecha: ${organizador.getEvento().fecha}'),
+                          Text('Ubicación: ${organizador.getEvento().ubicacion}'),
                         ],
                       ),
                     ),
@@ -157,6 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
 }
 
 class CrearJefesDialog extends StatefulWidget {
@@ -270,11 +272,25 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
                         _mostrarEvento(context, empleado);
                       }
                     },
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        //AÑADIDO PARA ELIMINAR EMPLEADOS
+                        _mostrarConfirmacionEliminarEmpleado(context, empleado);
+                      },
+                    ),
                   );
 
                 } else {
                   return ListTile(
                     title: Text(empleado.getNombre()),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        //AÑADIDO PARA ELIMINAR EMPLEADOS
+                        _mostrarConfirmacionEliminarEmpleado(context, empleado);
+                      },
+                    ),
                   );
                 }
               },
@@ -437,37 +453,222 @@ class _GestorEmpleadosPageState extends State<GestorEmpleadosPage> {
     );
   }
 
+  //MODIFICADO PARA SER EDITABLE
   void _mostrarEvento(BuildContext context, Organizador organizadorSeleccionado) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        TextEditingController nombreEventoController = TextEditingController();
+        TextEditingController fechaEventoController = TextEditingController();
+        TextEditingController ubicacionEventoController = TextEditingController();
+
+        nombreEventoController.text = organizadorSeleccionado.getEvento().nombre; // Establecer el texto inicial del nombre del evento
+        fechaEventoController.text = organizadorSeleccionado.getEvento().fecha; // Establecer el texto inicial de la fecha del evento
+        ubicacionEventoController.text = organizadorSeleccionado.getEvento().ubicacion; // Establecer el texto inicial de la ubicación del evento
+
         return AlertDialog(
           title: const Text('Evento'),
           content: SingleChildScrollView(
             child: Column(
               children: [
-                Text(
-                    'Nombre: ${organizadorSeleccionado.getEvento().nombre}'
-                ),
-                Text(
-                    'Fecha: ${organizadorSeleccionado.getEvento().fecha}'
-                ),
-                Text(
-                    'Ubicación: ${organizadorSeleccionado.getEvento().ubicacion}'
-                ),
-
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Cerrar el diálogo
+                // Nombre del evento editable
+                TextFormField(
+                  controller: nombreEventoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Nombre del evento',
+                    border: InputBorder.none, // Eliminar el borde del TextFormField
+                  ),
+                  onTap: () {
+                    _editarNombreEvento(context, organizadorSeleccionado, nombreEventoController); //AÑADIDO
                   },
-                  child: const Text('Salir'),
+                ),
+                const Divider(), // Separador entre los campos
+
+                // Fecha del evento editable
+                TextFormField(
+                  controller: fechaEventoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Fecha del evento',
+                    border: InputBorder.none, // Eliminar el borde del TextFormField
+                  ),
+                  onTap: () {
+                    _editarFechaEvento(context, organizadorSeleccionado, fechaEventoController); //AÑADIDO
+                  },
+                ),
+                const Divider(), // Separador entre los campos
+
+                // Ubicación del evento editable
+                TextFormField(
+                  controller: ubicacionEventoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Ubicación del evento',
+                    border: InputBorder.none, // Eliminar el borde del TextFormField
+                  ),
+                  onTap: () {
+                    _editarUbicacionEvento(context, organizadorSeleccionado, ubicacionEventoController); //AÑADIDO
+                  },
                 ),
               ],
             ),
           ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo
+              },
+              child: const Text('Guardar'),
+            ),
+          ],
         );
       },
     );
+  }
+
+  //AÑADIDO
+  void _editarNombreEvento(BuildContext context, Organizador organizador, TextEditingController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Editar Nombre del Evento'),
+          content: TextFormField(
+            controller: controller,
+            decoration: const InputDecoration(hintText: 'Nuevo nombre del evento'),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                String nuevoNombre = controller.text;
+                organizador.cambiarNombreEvento(nuevoNombre);
+                Navigator.pop(context); // Cerrar el diálogo de edición
+                // Mostrar mensaje de éxito o hacer otras acciones si es necesario
+              },
+              child: const Text('Guardar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo de edición
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //AÑADIDO
+  void _editarFechaEvento(BuildContext context, Organizador organizador, TextEditingController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Editar Fecha del Evento'),
+          content: TextFormField(
+            controller: controller,
+            decoration: const InputDecoration(hintText: 'Nueva fecha del evento'),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                String nuevaFecha = controller.text;
+                organizador.cambiarFechaEvento(nuevaFecha);
+                Navigator.pop(context); // Cerrar el diálogo de edición
+                // Mostrar mensaje de éxito o hacer otras acciones si es necesario
+              },
+              child: const Text('Guardar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo de edición
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //AÑADIDO
+  void _editarUbicacionEvento(BuildContext context, Organizador organizador, TextEditingController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Editar Ubicación del Evento'),
+          content: TextFormField(
+            controller: controller,
+            decoration: const InputDecoration(hintText: 'Nueva ubicación del evento'),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                String nuevaUbi = controller.text;
+                organizador.cambiarUbiEvento(nuevaUbi);
+                Navigator.pop(context); // Cerrar el diálogo de edición
+                // Mostrar mensaje de éxito o hacer otras acciones si es necesario
+              },
+              child: const Text('Guardar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo de edición
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Las funciones para editar la fecha y la ubicación del evento serían similares a _editarNombreEvento.
+
+
+
+  //AÑADIDO PARA ELIMINAR EMPLEADOS
+  void _mostrarConfirmacionEliminarEmpleado(BuildContext context, Empleado empleado) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Eliminar ${empleado.getNombre()}'),
+          content: Text('¿Estás seguro de que quieres eliminar a ${empleado.getNombre()}?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo de confirmación
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  borrarJerarquia(empleado, widget.jefe);
+                });
+                Navigator.of(context).pop(); // Cerrar el diálogo de confirmación
+              },
+              child: const Text('Eliminar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //AÑADIDO PARA ELIMINAR EMPLEADOS
+  void borrarJerarquia(Empleado empleado, Jefe suJefe){
+    suJefe.eliminaEmpleado(empleado);
+    if(empleado is Jefe){
+      widget.jefes.remove(empleado);
+      for(Empleado sub in empleado.getEquipo()){
+        borrarJerarquia(sub, empleado);
+      }
+    }
+    if(empleado is Organizador){
+      widget.organizadores.remove(empleado);
+    }
   }
 
 }
