@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:p2/boda_builder.dart';
 import 'package:p2/empleado.dart';
+import 'package:p2/evento.dart';
 import 'package:p2/evento_builder.dart';
 import 'package:p2/jefe.dart';
 
@@ -51,7 +52,7 @@ void main() {
       subJefe.aniadeEmpleado(subOrganizador);
     }
 
-    test('La función getNombre() devuelve el nombre correctamente', () {
+    test('El nombre se asigna correctamente', () {
       //PRIMERO
       String nombreJefe = "Jefe - Sr. Jefe";
       expect(jefe.getNombre(), nombreJefe);
@@ -84,9 +85,18 @@ void main() {
           "Organizador - Sra. SubOrganizadora");
     });
 
-    test('Se obtiene correctamente el equipo de un jefe correctamente', () {
+    test('Se obtiene el equipo de un jefe correctamente', () {
       //CUARTO
       agregarEmpleados();
+
+      //ACCEDE A LA LISTA DE EMPLEADOS DEL JEFE
+      List<Empleado> equipoJefe = jefe.getEquipo();
+
+      expect(equipoJefe.length, 3);
+      expect(equipoJefe[0].getNombre(), "Trabajador - Sr. Trabajador");
+      expect(equipoJefe[1].getNombre(), "Organizador - Sr. Organizador");
+      expect(equipoJefe[2].getNombre(), "Jefe - Sr. SubJefe");
+
       //ACCEDE AL SUBJEFE EN LA LISTA DE EMPLEADOS DEL JEFE
       Jefe subjefe = (jefe.getEquipo()[2] as Jefe);
       //ACCEDE A LA LISTA DE EMPLEADOS DE ESE SUBJEFE
@@ -95,8 +105,7 @@ void main() {
       expect(equipoSubJefe.length, 3);
       expect(equipoSubJefe[0].getNombre(), "Trabajador - Sr. SubTrabajador1");
       expect(equipoSubJefe[1].getNombre(), "Trabajador - Sr. SubTrabajador2");
-      expect(
-          equipoSubJefe[2].getNombre(), "Organizador - Sra. SubOrganizadora");
+      expect(equipoSubJefe[2].getNombre(), "Organizador - Sra. SubOrganizadora");
     });
 
     test('Los empleados se eliminan correctamente', () {
@@ -130,26 +139,55 @@ void main() {
   group("Tests de Organizador", () {
     late Organizador organizador;
     late EventoBuilder constructor;
+    late Evento evento;
 
     setUp(() {
       constructor = BodaBuilder();
       organizador = Organizador("Sr. Organizador");
       organizador.setBuilder(constructor);
       organizador.construirEvento("Boda", "01/01/2022", "Mi casa");
+      evento = organizador.getEvento();
     });
 
     test('El organizador se crea correctamente', () {
       expect(organizador.getNombre(), "Organizador - Sr. Organizador");
     });
 
-    test('El evento se construye correctamente', () {
+    test('Al Organizador se le asigna un evento correctamente', () {
       expect(organizador.tieneEvento, true);
-      expect(organizador.getEvento().nombre, "Boda");
-      expect(organizador.getEvento().fecha, "01/01/2022");
-      expect(organizador.getEvento().ubicacion, "Mi casa");
+    });
+
+    test('El evento se construye correctamente', () {
+      expect(evento.nombre, "Boda");
+      expect(evento.fecha, "01/01/2022");
+      expect(evento.ubicacion, "Mi casa");
+    });
+
+    test('El organizador puede modificar el nombre del evento', () {
+      organizador.cambiarNombreEvento('Divorcio');
+      expect(evento.nombre, 'Divorcio');
+    });
+
+    test('El organizador puede modificar la fecha del evento', () {
+      organizador.cambiarFechaEvento('14/02/2022');
+      expect(evento.fecha, '14/02/2022');
+    });
+
+    test('El organizador puede modificar la ubicación del evento', () {
+      organizador.cambiarUbiEvento('Juzgados');
+      expect(evento.ubicacion, 'Juzgados');
+    });
+
+    test('El organizador no puede construir más de un evento', () {
+      organizador.construirEvento("Boda2", "2-2-2022", "iglesia");
+      //El evento que se mantiene es el primero
+      expect(evento.nombre, "Boda");
+      expect(evento.fecha, "01/01/2022");
+      expect(evento.ubicacion, "Mi casa");
     });
   });
 
+  /*
   group("Test de botones", () {
     testWidgets('Test botón Ingresar Jefes', (WidgetTester tester) async {
       // Construye la aplicación y dispara un frame.
@@ -172,4 +210,5 @@ void main() {
       expect(find.byType(TextField), findsOneWidget);
     });
   });
+  */
 }

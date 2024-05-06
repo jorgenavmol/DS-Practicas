@@ -17,6 +17,7 @@ class Jefe implements Empleado {
     empleados.add(empleado);
   }
 
+  //AÑADIDA
   void eliminaEmpleado(Empleado empleado) {
     empleados.remove(empleado);
   }
